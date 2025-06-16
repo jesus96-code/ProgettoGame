@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Console</title>
+	<link rel="stylesheet" href="/css/stile.css" />
+</head>
+
+<body>
+	<header>
+		<div th:if="${#request.userPrincipal}">
+			<span th:text="${#request.userPrincipal.principal.username}"></span>
+			<a href="/logout">Logout</a>
+		</div>
+		<div th:unless="${#request.userPrincipal}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+
+	<div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
+		<h1>Console che soddisfano i requisiti</h1>
+		<div th:if="${consoles.isEmpty()}">Non ci sono consoles che soddisfano i requisiti</div>
+		<ul th:if="${!consoles.isEmpty()}">
+			<li th:each="console : ${consoles}">
+				<a href="console.html" th:href="@{'/console' + '/' + ${console.id}}"
+					th:text="${console.name} + ' (' + ${console.anno}+')'">Up! (2000)</a>
+			</li>
+		</ul>
+</body>
+
+<footer>
+        <a href="/formSearchConsoles">
+            <button type="submit">Torna indietro</button>
+        </a>
+</footer>
+
+</html>

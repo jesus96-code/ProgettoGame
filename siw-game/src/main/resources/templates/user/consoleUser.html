@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Console</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/index.css"/>
+</head>
+
+<body>
+<header>
+    <div th:if="${#request.userPrincipal}">
+        <span th:text="${#request.userPrincipal.principal.username}"></span>
+        <a href="/logout">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Logout</button>
+        </a>
+    </div>
+    <div th:unless="${#request.userPrincipal}">
+        <a href="/login">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
+        </a>
+    </div>
+</header>
+
+<div class="logo">
+    <img src="/images/logo-game.png" width="50%"/>
+</div>
+
+<h1 th:if="${console}" th:text="${console.name + ' (' + console.anno + ')'}">Dettagli Console</h1>
+
+<div th:unless="${console}">Non esiste</div>
+
+<div id="flex-container">
+    <div class="movie-section">
+
+        <!-- regista -->
+        <div th:if="${console.giocoEsclusivo}">
+            <h2>Gioco esclusivo: </h2> 
+            <ul>
+            	<li>
+            		<span th:text="${console.giocoEsclusivo.name}"></span>
+            	</li>
+            </ul>
+        </div>
+        <div th:unless="${console.giocoEsclusivo}">
+            <h2>Nessun gioco esclusivo per questa console</h2>
+        </div>
+
+        <!-- giochi -->
+        <div th:if="${!console.games.isEmpty()}">
+            <h2>Giochi:</h2>
+            <ul>
+                <li th:each="game : ${console.games}">
+                    <span th:text="${game.name}"> </span>
+                </li>
+            </ul>
+        </div>
+        <div th:unless="${!console.games.isEmpty()}">
+            <h2>Non ci sono giochi per questa console</h2>
+        </div>
+    </div>
+
+    <!-- recensioni -->
+    <div class="review-section">
+        <div th:if="${!console.reviews.isEmpty()}">
+            <h2>Recensioni:</h2>
+            <ul>
+                <li th:each="review: ${console.reviews}">
+                    <span> Titolo: </span>
+                    <span th:text="${review.title}"></span>
+                    <span> Voto: </span>
+                    <span th:text="${review.rating}"></span>
+                    <span> Recensione: </span>
+                    <span th:text="${review.comment}"></span>
+                </li>
+            </ul>
+        </div>
+        <div th:unless="${!console.reviews.isEmpty()}">
+            <h2>Non ci recensioni per questo film</h2>
+        </div>
+        <div>
+            <a th:href="@{'/user/formNewReview/' + ${console.id}}">Aggiungi Recensione</a>
+        </div>
+    </div>
+
+    <!-- scene --->
+
+    <!-- <h2>Scene:</h2>
+    <div class="slideshow-container">
+        <div th:if="${!movie.scenes.isEmpty()}">
+            <div class="slideshow-wrapper">
+                <div class="slideshow-item">
+                    <div class="image-overlay" th:each="scene : ${movie.scenes}">
+                        <img class="mySlides active" th:src="@{'data:image;base64,' + ${scene}}"/>
+                    </div>
+                </div>
+                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            </div>
+        </div>
+    </div> -->
+</div>
+
+</body>
+<footer>
+    <div class="footer_div">
+        <a href="/user/consolesUser">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Torna indietro</button>
+        </a>
+    </div>
+</footer>
+</html>

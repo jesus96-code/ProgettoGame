@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	  <title>Elenco Film</title>
+	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+	        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	  <link th:href="@{/css/index.css}" rel="stylesheet">
+	</head>
+
+	<body>
+		<header>
+		  <div th:if="${#request.userPrincipal}">
+		    <span th:text="${#request.userPrincipal.principal.username}"></span>
+		    <a href="/logout">
+		      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Logout</button>
+		    </a>
+		  </div>
+		  <div th:unless="${#request.userPrincipal}">
+		    <a href="/login"><button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
+		    </a>
+		  </div>
+		</header>
+	
+	<div class="logo">
+	  <img src="/images/logo-game.png" width="50%"/>
+	</div>
+	
+	<div class="general">
+	  <h1>Film presenti nel database</h1>
+	  <div th:if="${consoles == null || consoles.isEmpty()}">Non ci sono film nel sistema</div>
+	 
+	    <ul>
+	      <li th:each="console : ${consoles}">
+	        <a th:href="@{'/user/consoleUser' + '/' + ${console.id}}"
+	        	th:text = "${console.name} + ' ' + ${console.anno}">
+	          <!--<img class="card-img-top" th:src="@{'data:image;base64,' + ${movie.photo}}"
+	               alt="Card image cap"> -->
+	        </a>
+	      </li>
+	    </ul>
+	  
+	</div>
+	
+	</body>
+<footer>
+  <div class="footer_div">
+    <a href="/">
+      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Torna indietro</button>
+    </a>
+  </div>
+</footer>
+</html>

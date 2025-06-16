@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Scelta games</title>
+	<link rel="stylesheet" href="/css/updateGames.css" />
+</head>
+
+<body>
+	<header>
+		<div th:if="${#request.userPrincipal}">
+			<span th:text="${#request.userPrincipal.principal.username}"></span>
+			<a href="/logout">Logout</a>
+		</div>
+		<div th:unless="${#request.userPrincipal}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+	
+	<div class="logo"><a href="/"><img src="/images/logo-game.png" width="50%"/></a></div>
+	<h1 th:text="'Giochi della console ' + ${console.name}"></h1>
+	
+	<div  class="attore">
+	<div class="vuoto" th:if="${console.games.isEmpty()}">Non ci sono giochi per questo console</div>
+		<ul>
+			<li th:each="game : ${console.games}">
+				<span th:text="${game.name}"></span>
+				<a th:href="@{'/admin/removeGameFromConsole/'+ ${game.id}+'/'+${console.id}}">Cancella</a>
+			</li>
+		</ul>
+	<div>
+		Giochi che si possono aggiungere:
+		<ul>
+			<li th:each="game : ${gamesToAdd}">
+				<span th:text="${game.name}"></span>
+				<a th:href="@{'/admin/addGameToConsole/'+ ${game.id}+'/'+${console.id}}">Aggiungi</a>
+			</li>
+		</ul>
+	</div>
+	</div>
+	<div>
+		<a th:href="@{'/admin/formUpdateConsole/'+ ${console.id}}"><button type="button">Fine</button></a>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>
+		SiwGame - Homepage
+	</title>
+	<link rel="stylesheet" href="/css/admin.css" />
+</head>
+
+<header>
+    <div th:if="${#request.userPrincipal}">
+        <span th:text="${#request.userPrincipal.principal.username}"></span>
+        <a href="/logout">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Logout</button>
+        </a>
+    </div>
+    <div th:unless="${#request.userPrincipal}">
+        <a href="/login">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
+        </a>
+    </div>
+</header>
+
+<body>
+	<div style="text-align: center;"><img src="/images/logo-siw.png" width="50%" /></div>
+	
+	<h1>Menu amministratore</h1>
+	<div>
+		<a href="/admin/indexConsole">Operazioni sulle console</a>
+	</div>
+	<div>
+		<a href="/console">Elenco Console</a>
+	</div>
+	<div>
+		<a href="/admin/indexGame">Operazioni sui giochi</a>
+	</div>
+	<div>
+		<a href="/game">Elenco games</a>
+	</div>
+	
+	<!--- Messaggio per l'amministratore--->
+	<div class="messaggio_admin">
+	
+	    <h1>Ben tornato alla pagina dell'amministratore!</h1>
+	        <h1>Qui puoi: </h1>
+	
+	        <p>
+	            Consultare gli archivi delle console e dei giochi;
+	        </p>
+	        <p>
+	            Effettuare inserimento sugli archivi delle console e dei giochi;
+	        </p>
+	        <p>
+	            Effettuare cancellazione sugli archivi delle console e dei giochi;
+	        </p>
+	        <p>
+	            Effettuare eventuali modifiche sugli archivi delle console e dei giochi;
+	        </p>
+	
+	</div>
+	
+</body>
+
+</html>

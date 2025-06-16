@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SiwGame - Update Console</title>
+    <link rel="stylesheet" href="/css/updateConsole.css"/>
+</head>
+
+<body>
+<header>
+    <div th:if="${#request.userPrincipal}">
+        <span th:text="${#request.userPrincipal.principal.username}"></span>
+        <a href="/logout">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Logout</button>
+        </a>
+    </div>
+    <div th:unless="${#request.userPrincipal}">
+        <a href="/login">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
+        </a>
+    </div>
+</header>
+
+<div class="logo">
+    <a href="/"><img src="/images/logo-game.png" width="50%"/></a>
+</div>
+
+<div id="flex-container">
+    <div class="actor-section">
+        <div th:if="${console}">
+            <h1 th:text="'Aggiorna console'+ ' *'+ ${console.name} + '*'"></h1>
+            <form th:action="@{'/admin/updateConsole/' + ${console.id}}" method="POST" th:object="${console}">
+                <div>
+                    <label>Nome: </label>
+                    <input type="text" th:field="${console.name}"/>
+                </div>
+                <div>
+                    <label>Anno di uscita:</label>
+                    <input type="number" th:field="${console.anno}"/>
+                </div>
+                <button class="btn btn-outline-primary" type="submit">Conferma</button>
+            </form>
+            
+            <div th:if="${console.giocoEsclusivo}">
+                <span>Gioco esclusivo per questa console: </span>
+                <span th:text="${console.giocoEsclusivo.name}">Steven</span>
+                <a th:href="@{'/admin/addGame/' + ${console.id}}">Modifica Gioco</a>
+            </div>
+            <div th:unless="${console.giocoEsclusivo}">
+                <a th:href="@{'/admin/addGame/' + ${console.id}}">Aggiungi gioco esclusivo</a>
+            </div>
+
+            <div>
+                <label>Giochi: </label>
+                
+                <div th:each="game: ${console.games}">
+                    <li>
+                    	<span th:text="${game.name}">Al</span>
+                    </li>
+                </div>
+                
+                <a th:href="@{'/admin/updateGames/' + ${console.id}}">
+                    <button class="btn btn-outline-primary" type="submit">Modifica</button>
+                </a>
+                
+                <div>
+               		<!--<span th:text="'Numero di attori: ' + ${actorCount}"> </span>-->
+               		<a th:href="@{'/admin/conteggioGiochi/' + ${console.id}}">Quanti giochi ha la console</a>
+               	</div>
+            </div>
+        </div>
+    </div>
+
+        <div class="review-section">
+	        <div th:if="${console}">
+	            <span>Recensioni: </span>
+	            <div th:unless="${!console.reviews.isEmpty()}">Non ci sono recensioni da cancellare</div>
+	            <div th:each="review: ${console.reviews}">
+	                <span th:text="${review.title} + ' ' + ${review.comment}">Al Pacino</span>
+	                <a th:href="@{'/admin/deleteReview' + '/' + ${review.id} + '/' + ${console.id}}"> Cancella </a>
+	            </div>
+	        </div>
+        </div>
+    <div th:unless="${console}">Console non esistente</div>
+</div>
+</body>
+
+<footer>
+    <div class="footer_div">
+        <a href="/admin/manageConsoles">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Torna indietro</button>
+        </a>
+    </div>
+</footer>
+</html>

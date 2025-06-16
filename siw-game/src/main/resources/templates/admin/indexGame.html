@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			SiwMovie - Gestione Games
+		</title>
+		<link rel="stylesheet" href="/css/indexGame.css" />
+	</head>
+<body>
+	<header>
+		<div th:if="${#request.userPrincipal}">
+			<span th:text="${#request.userPrincipal.principal.username}"></span>
+			<a href="/logout">Logout</a>
+		</div>
+		<div th:unless="${#request.userPrincipal}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+
+		<div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
+		<h1>Gestione Games</h1>
+		<div>
+			<a href="/admin/formNewGame">Inserisci i dati di un game</a>
+		</div>
+		<div>
+			<a href="/game">Games</a>
+		</div>
+		
+		<div>
+			<a href="/">
+				<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Torna indietro</button>			
+			</a>
+		</div>
+	</body>
+</html>

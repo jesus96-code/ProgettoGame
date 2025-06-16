@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Console</title>
+	<link rel="stylesheet" href="/css/manageConsoles.css" />
+</head>
+
+<body>
+	<header>
+		<div th:if="${#request.userPrincipal}">
+			<span th:text="${#request.userPrincipal.principal.username}"></span>
+			<a href="/logout">Logout</a>
+		</div>
+		<div th:unless="${#request.userPrincipal}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+
+	<div class="logo"><a href="/"><img src="/images/logo-game.png" width="50%" /></a></div>
+	<ul>
+		<li>
+			<span th:text="'Numero di giochi: ' + ${gameCount}"> </span>
+		</li>
+	</ul>
+</body>
+
+ <footer>
+	<div>
+		<a href="/admin/manageConsoles">
+			<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Torna indietro</button>
+		</a>
+	</div>
+</footer> 
+
+</html>

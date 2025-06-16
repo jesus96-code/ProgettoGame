@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    	<title>Console</title>
+		<link rel="stylesheet" href="/css/stile.css" />
+  </head>
+
+<body>
+	<header>
+		<div th:if="${#request.userPrincipal}">
+			<span th:text="${#request.userPrincipal.principal.username}"></span>
+			<a href="/logout">Logout</a>
+		</div>
+		<div th:unless="${#request.userPrincipal}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+
+	<div><img src="/images/logo-siw.png" width="50%"/></div>
+	<div><a href="/"> Home </a></div>
+    <h1>Dettagli Console: </h1>
+    <div th:if="${console}">
+        <div><b>Nome: </b><span th:text="${console.name}">Up!</span></div>
+        <p th:text="'Anno di uscita: ' + ${console.anno}">2000</p>
+        
+        <div th:if = "${console.games}"><b>Attori:</b>
+	       	<span th:each="game : ${console.games}">
+          		<a th:href="@{'/game/' + ${game.id}}" th:text="${game.name}"></a>
+          	</span>
+	    </div>
+	    <div th:if = "${console.games.isEmpty()}" > Non ci sono giochi per questo console</div> 
+        
+        <h2>Gioco esclusivo: </h2>
+        <div th:if="${console.giocoEsclusivo}">
+        	<span th:text="${console.giocoEsclusivo.name}"></span>
+      	</div>
+     	<div th:unless="${console.giocoEsclusivo}">
+     		<h3>Nessun gioco esclusivo per questa console</h3>
+     	</div>
+    </div>
+        
+        <span><img width="5%" th:src=${console.urlImage} /></span> 
+        <h2>Recensioni:</h2>
+    		<div th:if="${!console.reviews.isEmpty()}">
+	            <ul>
+	                <lu th:each="review: ${console.reviews}">
+	                	<li>
+	                    	<div>Titolo: <span th:text="${review.title}"></span></div>
+	                    </li>
+	                    <li>
+	                    	<div>Voto: <span th:text="${review.rating}"></span></div>
+	                    </li>
+	                    <li>
+	                    	<div>Commento: <span th:text="${review.comment}"></span></div>
+	                    </li>
+	                </lu>
+	            </ul>
+        	</div>
+	        <div th:unless="${!console.reviews.isEmpty()}">
+	            <h2>Non ci sono recensioni per questa console</h2>
+	        </div>	
+		    
+    
+    	<div th:unless="${console}">Non esiste</div>
+  </body>
+  <footer>
+    <div class="footer_div">
+        <a href="/console">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Torna indietro</button>
+        </a>
+    </div>
+</footer>
+</html>

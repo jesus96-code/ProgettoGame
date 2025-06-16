@@ -1,0 +1,173 @@
+/* Reset di base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Corpo della pagina */
+body {
+    background-color: #f4f4f4;
+    color: #333;
+    text-align: center;
+    padding-top: 80px;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #222;
+    color: white;
+    padding: 15px 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header div {
+    display: flex;
+    align-items: center;
+}
+
+header span {
+    margin-right: 15px;
+    font-size: 1.1em;
+}
+
+/* Logo */
+img {
+    /*max-width: 200px;
+    margin: 20px 0;*/
+    text-align: center;
+}
+
+/* Link */
+a {
+    text-decoration: none;
+    color: #00b4d8;
+    font-size: 1.2em;
+    font-weight: bold;
+    display: block;
+    padding: 5px;
+    transition: color 0.3s ease-in-out;
+}
+
+a:hover {
+    color: #0077b6;
+}
+
+/* Contenitore principale */
+div {
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+/* Titoli */
+h1, h2, h3 {
+    color: #00b4d8;
+    text-align: center;
+}
+
+/* Informazioni console */
+b {
+    font-size: 1.2em;
+}
+
+/* Sezione Giochi */
+/**span[th\\:each] {
+    display: inline-block;
+    background-color: #00b4d8;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+span[th\\:each] a {
+    color: white;
+    font-weight: normal;
+}*/
+
+/* Recensioni */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background-color: white;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Messaggi di avviso */
+h2 + div {
+    font-style: italic;
+    color: red;
+}
+
+/* Footer */
+footer {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #222;
+    color: white;
+    text-align: center;
+}
+
+footer a {
+    color: white;
+    font-size: 1.1em;
+}
+
+footer a:hover {
+    color: #00b4d8;
+}
+
+/* Bottone */
+button {
+    background-color: transparent;
+    border: 2px solid #00b4d8;
+    color: #00b4d8;
+    padding: 8px 15px;
+    font-size: 1em;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #00b4d8;
+    color: white;
+}
+
+/* Layout responsivo */
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    header div {
+        margin-bottom: 10px;
+    }
+
+    img {
+        width: 80%;
+    }
+
+    div {
+        width: 90%;
+    }
+
+    footer {
+        padding: 15px;
+    }
+}

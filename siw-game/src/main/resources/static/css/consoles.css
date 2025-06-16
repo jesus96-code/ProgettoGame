@@ -1,0 +1,119 @@
+/* Reset di base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Corpo della pagina */
+body {
+    background-color: #f4f4f4;
+    color: #333;
+    text-align: center;
+    padding-top: 80px;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #222;
+    color: white;
+    padding: 15px 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header div {
+    display: flex;
+    align-items: center;
+}
+
+header span {
+    margin-right: 15px;
+    font-size: 1.1em;
+}
+
+/* Logo */
+.logo img {
+    max-width: 400px;
+    margin: 20px 0;
+}
+
+/* Link Home */
+div a {
+    display: inline-block;
+    background-color: #00b4d8;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s ease-in-out;
+    margin-bottom: 20px;
+}
+
+div a:hover {
+    background-color: #0077b6;
+}
+
+/* Titolo */
+h1 {
+    color: #00b4d8;
+    margin-bottom: 20px;
+}
+
+/* Lista Console */
+ul {
+    list-style: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+li {
+    background-color: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+li a:hover {
+    color: #00b4d8;
+}
+
+/* Messaggio "Non ci sono console" */
+div[th\\:if] {
+    font-style: italic;
+    color: red;
+    margin-bottom: 20px;
+}
+
+/* Layout responsivo */
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    header div {
+        margin-bottom: 10px;
+    }
+
+    .logo img {
+        width: 80%;
+    }
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Console</title>
+	<link rel="stylesheet" href="/css/manageConsoles.css" />
+</head>
+
+<body>
+	<header>
+		<div th:if="${#request.userPrincipal}">
+			<span th:text="${#request.userPrincipal.principal.username}"></span>
+			<a href="/logout">Logout</a>
+		</div>
+		<div th:unless="${#request.userPrincipal}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+
+	<div class="logo"><a href="/"><img src="/images/logo-siw.png" width="50%" /></a></div>
+	<h1>Console</h1>
+	<div></div>
+	<div th:if="${consoles.isEmpty()}">Non ci sono console nel sistema</div>
+	<ul>
+		<li th:each="console : ${consoles}">
+			<span th:text="${console.name} + ' (' + ${console.anno} + ')'">Up! (2000)</span>
+			<a th:href="@{'/admin/formUpdateConsole' + '/' + ${console.id}}">Aggiorna</a>
+		</li>
+	</ul>
+</body>
+
+ <footer>
+	<div>
+		<a href="/admin/indexConsole">
+			<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Torna indietro</button>
+		</a>
+	</div>
+</footer> 
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>
+		New Console
+	</title>
+	<link rel="stylesheet" href="/css/newConsole.css" />
+</head>
+
+<body>
+	<header>
+		<div th:if="${#request.userPrincipal}">
+			<span th:text="${#request.userPrincipal.principal.username}"></span>
+			<a href="/logout">Logout</a>
+		</div>
+		<div th:unless="${#request.userPrincipal}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+	<div class="logo"><a href="/"><img src="/images/logo-game.png" width="50%"/></a></div>
+	<h1>Aggiungi una Console</h1>
+	<form th:action="@{/console}" method="POST" th:object="${console}">
+  		<div th:if="${#fields.hasGlobalErrors()}">
+  			<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
+  		</div>
+		
+		<div>
+			<label>Nome:</label>
+			<span><input type="text" th:field="${console.name}" /></span>
+		    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+		    </span>
+		</div>
+
+		<div>
+			<label>Anno:</label> <span><input type="text" th:field="${console.anno}" /></span>
+		    <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}">
+		    </span>
+		</div>
+
+		<div>
+			<label>URL immagine:</label> <span><input type="text" th:field="${console.urlImage}" /></span>
+		</div>
+		
+		<div>
+			<span><button type="submit">Conferma</button></span>
+		</div>
+	</form>
+</body>
+
+</html>
