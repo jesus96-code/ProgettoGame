@@ -1,0 +1,49 @@
+#==================================
+# = Datasource
+#==================================
+spring.jpa.database=POSTGRESQL
+spring.jpa.show-sql=true
+logging.level.org.hibernate.SQL=debug  
+logging.level.org.hibernate.type.descriptor.sql=trace
+spring.jpa.hibernate.ddl-auto=update
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.datasource.url=jdbc:postgresql://localhost:5432/game
+spring.datasource.username=postgres
+spring.datasource.password=1234
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+spring.jpa.properties.hibernate.dialectic=org.hibernate.dialect.PostgreSQLDialect
+#==================================
+# = Web server
+#==================================
+server.port=8082
+server.error.whitelabel.enabled=false
+server.error.include-stacktrace=always
+#==================================
+# = Messages
+#==================================
+spring.messages.basename=messages/messages
+spring.messages.encoding=ISO-8859-1
+#==================================
+# = Thymeleaf configurations
+#==================================
+spring.thymeleaf.check-template-location=true
+spring.thymeleaf.prefix=classpath:/templates/
+spring.thymeleaf.suffix=.html
+spring.thymeleaf.servlet.content-type=text/html
+spring.thymeleaf.cache=false
+spring.thymeleaf.enabled=true
+spring.thymeleaf.encoding=ISO-8859-1
+
+# OAuth2 Client (Google)
+spring.security.oauth2.client.registration.google.client-id=YOUR_CLIENT_ID
+spring.security.oauth2.client.registration.google.client-secret=YOUR_CLIENT_SECRET
+spring.security.oauth2.client.registration.google.scope=openid,profile,email
+
+# Imposta il redirect URI (Spring Boot usa questo di default)
+spring.security.oauth2.client.registration.google.redirect-uri=http://localhost:8082/login/oauth2/code/google
+
+# Provider (Google standard OpenID Connect)
+spring.security.oauth2.client.provider.google.authorization-uri=https://accounts.google.com/o/oauth2/v2/auth
+spring.security.oauth2.client.provider.google.token-uri=https://oauth2.googleapis.com/token
+spring.security.oauth2.client.provider.google.user-info-uri=https://openidconnect.googleapis.com/v1/userinfo
+spring.security.oauth2.client.provider.google.user-name-attribute=sub
