@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,28 +39,71 @@ public class AuthenticationController {
 
 	@GetMapping(value = "/") 
 	public String index(Model model) {
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		if (authentication instanceof AnonymousAuthenticationToken) {
+//	        return "index.html";
+//		}
+//		else {		
+//			UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//			Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+//			if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
+//				return "admin/indexAdmin.html";
+//			}
+//		}
+//        return "user/indexUser.html";
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication instanceof AnonymousAuthenticationToken) {
+
+	    if (authentication instanceof AnonymousAuthenticationToken) {
 	        return "index.html";
-		}
-		else {		
-			UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
-			if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
-				return "admin/indexAdmin.html";
-			}
-		}
-        return "user/indexUser.html";
+	    }
+
+	    Object principal = authentication.getPrincipal();
+	    String username;
+
+	    if (principal instanceof UserDetails) {
+	        username = ((UserDetails) principal).getUsername();
+	    } else if (principal instanceof OidcUser) {
+	        username = ((OidcUser) principal).getEmail(); // oppure getPreferredUsername()
+	    } else {
+	        return "index.html"; // fallback
+	    }
+
+	    Credentials credentials = credentialsService.getCredentials(username);
+
+	    if (credentials != null && Credentials.ADMIN_ROLE.equals(credentials.getRole())) {
+	        return "admin/indexAdmin.html";
+	    }
+
+	    return "user/indexUser.html";
 	}
 		
     @GetMapping(value = "/success")
     public String defaultAfterLogin(Model model) {
         
-    	UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
-    	if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
+//    	UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//    	Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+//    	if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
+//            return "admin/indexAdmin.html";
+//        }
+//        return "user/indexUser.html";
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        String username;
+
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else if (principal instanceof OidcUser) {
+            username = ((OidcUser) principal).getEmail();
+        } else {
+            return "index.html";
+        }
+
+        Credentials credentials = credentialsService.getCredentials(username);
+
+        if (credentials != null && Credentials.ADMIN_ROLE.equals(credentials.getRole())) {
             return "admin/indexAdmin.html";
         }
+
         return "user/indexUser.html";
     }
 
