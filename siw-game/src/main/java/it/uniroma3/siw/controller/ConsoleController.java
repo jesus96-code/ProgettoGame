@@ -5,8 +5,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -234,10 +236,28 @@ public class ConsoleController {
 	
 	@GetMapping(value = "/user/consolesUser")
 	public String getUserConsoles(Model model) {
-		UserDetails user = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Credentials credentials = credentialsService.getCredentials(user.getUsername());
-		model.addAttribute("user", credentials.getUser());
-		model.addAttribute("consoles", this.consoleRepository.findAll());
+//		UserDetails user = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		Credentials credentials = credentialsService.getCredentials(user.getUsername());
+//		model.addAttribute("user", credentials.getUser());
+//		model.addAttribute("consoles", this.consoleRepository.findAll());
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String email = null;
+
+	    if (principal instanceof OidcUser) {
+	        OidcUser oidcUser = (OidcUser) principal;
+	        email = oidcUser.getEmail(); // oppure: (String) oidcUser.getAttributes().get("email")
+	    } else if (principal instanceof UserDetails) {
+	        email = ((UserDetails) principal).getUsername();
+	    }
+
+	    Credentials credentials = credentialsService.getCredentials(email);
+	    if (credentials == null) {
+	        return "redirect:/registerGoogle"; // o gestisci come vuoi
+	    }
+
+	    model.addAttribute("user", credentials.getUser()); // User ha nome/cognome
+	    model.addAttribute("username", credentials.getUsername()); // email
+	    model.addAttribute("consoles", consoleRepository.findAll());
 		return "user/consolesUser.html";
 	}
 

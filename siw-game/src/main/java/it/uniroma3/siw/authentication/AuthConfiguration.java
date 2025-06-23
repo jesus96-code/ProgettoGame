@@ -4,22 +4,32 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.service.CredentialsService;
-import it.uniroma3.siw.service.CustomOAuth2UserService;
+import it.uniroma3.siw.service.CustomOidcUserService;
 
 import javax.sql.DataSource;
 
 import static it.uniroma3.siw.model.Credentials.ADMIN_ROLE;
 import static it.uniroma3.siw.model.Credentials.DEFAULT_ROLE;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -36,7 +46,7 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 	private CredentialsService credentialsService;
 	
 	@Autowired
-	private CustomOAuth2UserService customOAuth2UserService;
+	private CustomOidcUserService customOidcUserService;
 
 	/**
 	 * Questo metodo contiene le impostazioni della configurazione
@@ -83,9 +93,7 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
         .oauth2Login()
         	    .loginPage("/login") // stessa pagina login per entrambi
         	    .userInfoEndpoint()
-                	.userService(customOAuth2UserService) // <-- qui colleghi il bean
-                .and()
-        	    .defaultSuccessUrl("/success", true);
+                	.oidcUserService(customOidcUserService); // <-- qui colleghi il bean
 	}
 
 	/**
