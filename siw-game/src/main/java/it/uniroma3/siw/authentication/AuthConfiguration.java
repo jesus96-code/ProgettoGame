@@ -4,32 +4,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import it.uniroma3.siw.model.Credentials;
-import it.uniroma3.siw.model.User;
+
 import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.CustomOidcUserService;
+
 
 import javax.sql.DataSource;
 
 import static it.uniroma3.siw.model.Credentials.ADMIN_ROLE;
-import static it.uniroma3.siw.model.Credentials.DEFAULT_ROLE;
-
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -41,12 +31,14 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 	 */
 	@Autowired
 	DataSource datasource;
+
 	
 	@Autowired
 	private CredentialsService credentialsService;
 	
 	@Autowired
 	private CustomOidcUserService customOidcUserService;
+
 
 	/**
 	 * Questo metodo contiene le impostazioni della configurazione
@@ -58,7 +50,7 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 		// AUTORIZZAZIONE: qui definiamo chi può accedere a cosa
 		.authorizeRequests()
 		// chiunque (autenticato o no) può accedere alle pagine index, login, register, ai css e alle immagini
-		.antMatchers(HttpMethod.GET, "/", "/index", "/login", "/register", "/css/**", "/public/**",
+		.antMatchers(HttpMethod.GET, "/", "/index", "/login", "/register", "/css/**","/public/**",
 					 "/console/**", "/game/**", "/reviews/**", "/images/**", "favicon.ico").permitAll()
 	    .antMatchers(HttpMethod.GET, "/review/**").permitAll()
 		// chiunque (autenticato o no) può mandare richieste POST al punto di accesso per login e register 
@@ -88,12 +80,27 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 		.invalidateHttpSession(true)
 		.deleteCookies("JSESSIONID")
 		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+
 		.clearAuthentication(true).permitAll()
-        .and()
+		.and()
+//        .oauth2Login()
+//        	    .loginPage("/login") // stessa pagina login per entrambi
+//        	    .userInfoEndpoint()
+//                	.oidcUserService(customOidcUserService) // <-- qui colleghi il bean
+//                .and()
+//        	    	.defaultSuccessUrl("/success", true);
+		
         .oauth2Login()
-        	    .loginPage("/login") // stessa pagina login per entrambi
-        	    .userInfoEndpoint()
-                	.oidcUserService(customOidcUserService); // <-- qui colleghi il bean
+        .loginPage("/login")
+        .userInfoEndpoint()
+            .oidcUserService(customOidcUserService)
+            .and()
+        .defaultSuccessUrl("/user/consolesUser", true);// <== reindirizza utente loggato
+		
+//        .oauth2Login()
+//        	    .loginPage("/login") // stessa pagina login per entrambi
+//        	    .userInfoEndpoint()
+//                	.oidcUserService(customOidcUserService); // <-- qui colleghi il bean
 	}
 
 	/**
@@ -117,39 +124,4 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
-//	@Bean
-//	public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService() {
-//	    return userRequest -> {
-//	        OAuth2User oauth2User = new DefaultOAuth2UserService().loadUser(userRequest);
-//	        String email = (String)oauth2User.getAttributes().get("email");
-//
-//	        Credentials credentials = credentialsService.getCredentials(email);
-//
-//	        if (credentials == null) {
-//	            // Creazione automatica se non esiste nel DB
-//	            User user = new User();
-//	            user.setEmail(email);
-//	            user.setName((String)oauth2User.getAttributes().get("given_name"));
-//	            user.setSurname((String)oauth2User.getAttributes().get("family_name"));
-//
-//	            credentials = new Credentials();
-//	            credentials.setUsername(email);
-//	            credentials.setUser(user);
-//
-//	            // Condizione per assegnare ADMIN solo a certi indirizzi
-//	            if (email.equals("shuanjesus24@gmail.com")) {
-//	                credentials.setRole(ADMIN_ROLE);
-//	            } else {
-//	                credentials.setRole(DEFAULT_ROLE);
-//	            }
-//
-//	            credentialsService.saveCredentials(credentials);
-//	        }
-//
-//	        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(credentials.getRole());
-//
-//	        return new DefaultOAuth2User(authorities, oauth2User.getAttributes(), "email");
-//	    };
-//	}
 }

@@ -23,7 +23,7 @@
         <div><b>Nome: </b><span th:text="${console.name}">Up!</span></div>
         <p th:text="'Anno di uscita: ' + ${console.anno}">2000</p>
         
-        <div th:if = "${console.games}"><b>Giochi:</b>
+        <div th:if = "${console.games}"><b>Attori:</b>
 	       	<span th:each="game : ${console.games}">
           		<a th:href="@{'/game/' + ${game.id}}" th:text="${game.name}"></a>
           	</span>

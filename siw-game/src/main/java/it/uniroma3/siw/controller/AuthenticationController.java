@@ -39,10 +39,10 @@ public class AuthenticationController {
 
 	@GetMapping(value = "/") 
 	public String index(Model model) {
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		if (authentication instanceof AnonymousAuthenticationToken) {
-//	        return "index.html";
-//		}
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication instanceof AnonymousAuthenticationToken) {
+	        return "index.html";
+		}
 //		else {		
 //			UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //			Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
@@ -51,13 +51,7 @@ public class AuthenticationController {
 //			}
 //		}
 //        return "user/indexUser.html";
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-	    if (authentication instanceof AnonymousAuthenticationToken) {
-	        return "index.html";
-	    }
-
-	    Object principal = authentication.getPrincipal();
+		Object principal = authentication.getPrincipal();
 	    String username;
 
 	    if (principal instanceof UserDetails) {

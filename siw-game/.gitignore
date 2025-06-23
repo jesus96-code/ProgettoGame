@@ -34,4 +34,4 @@ build/
 /.metadata/
 
 #Files
-src/main/resources/application.properties
+siw-game/src/main/resources/application.properties.example
