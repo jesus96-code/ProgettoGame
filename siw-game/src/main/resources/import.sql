@@ -9,3 +9,13 @@ INSERT INTO games (id, name, url_of_picture) VALUES (2, 'Metal Gear Solid', '/im
 INSERT INTO games (id, name, url_of_picture) VALUES (3, 'Megaman X4', '/images/games/mega.jpg');
 INSERT INTO games (id, name, url_of_picture) VALUES (4, 'Halo', '/images/games/halo.jpg');
 INSERT INTO games (id, name, url_of_picture) VALUES (5, 'Crash', '/images/games/crash.jpg');
+INSERT INTO games (id, name, url_of_picture) VALUES (6, 'Aladino', '/images/games/ala.jpg');
+INSERT INTO games (id, name, url_of_picture) VALUES (7, 'Zelda', '/images/games/zelda.jpg');
+INSERT INTO games (id, name, url_of_picture) VALUES (8, 'God Of War', '/images/games/god.jpg');
+INSERT INTO games (id, name, url_of_picture) VALUES (9, 'Final Fantasy', '/images/games/final.jpg');
+INSERT INTO games (id, name, url_of_picture) VALUES (10, 'Crash Team Racing', '/images/games/ctr.jpg');
+INSERT INTO games (id, name, url_of_picture) VALUES (11, 'Spiderman', '/images/games/spider.jpg');
+INSERT INTO games (id, name, url_of_picture) VALUES (12, 'Tomb Raider', '/images/games/tomb.jpg');
+INSERT INTO games (id, name, url_of_picture) VALUES (13, 'Sega Rally', '/images/games/sega.jpg');
+INSERT INTO games (id, name, url_of_picture) VALUES (14, 'Grand Theft Auto V', '/images/games/gta.jpg');
+INSERT INTO games (id, name, url_of_picture) VALUES (15, 'Call Of Duty', '/images/games/cod.jpg');
