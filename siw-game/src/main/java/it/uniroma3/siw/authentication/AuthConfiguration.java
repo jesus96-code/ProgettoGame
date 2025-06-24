@@ -80,7 +80,6 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 		.invalidateHttpSession(true)
 		.deleteCookies("JSESSIONID")
 		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-
 		.clearAuthentication(true).permitAll()
 		.and()
 //        .oauth2Login()
@@ -95,7 +94,7 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
         .userInfoEndpoint()
             .oidcUserService(customOidcUserService)
             .and()
-        .defaultSuccessUrl("/user/consolesUser", true);// <== reindirizza utente loggato
+        .defaultSuccessUrl("/user/indexUser", true);// <== reindirizza utente loggato
 		
 //        .oauth2Login()
 //        	    .loginPage("/login") // stessa pagina login per entrambi
