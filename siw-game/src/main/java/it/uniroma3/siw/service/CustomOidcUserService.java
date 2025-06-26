@@ -33,7 +33,7 @@ public class CustomOidcUserService extends OidcUserService {
 
         String email = oidcUser.getEmail(); // oppure: (String) oidcUser.getAttributes().get("email")
         
-        Credentials existingCredentials = credentialsRepository.findByUsername(email);
+        Optional<Credentials> existingCredentials = credentialsRepository.findByUsername(email);
 
         if (existingCredentials == null) {
             // Primo login: crea utente e credenziali

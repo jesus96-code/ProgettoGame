@@ -22,4 +22,6 @@ public interface ConsoleRepository extends CrudRepository<Console, Long> {
 	//metodo che ordina i film in base al titolo
 	public List<Console> findByOrderByNameAsc();
 	
+	public List<Console> findAll();
+	
 }

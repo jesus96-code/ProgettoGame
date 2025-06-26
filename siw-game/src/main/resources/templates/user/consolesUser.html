@@ -36,13 +36,13 @@
 	</div>
 	
 	<div class="general">
-	  <h1>Film presenti nel database</h1>
-	  <div th:if="${consoles == null || consoles.isEmpty()}">Non ci sono film nel sistema</div>
+	  <h1>Console presenti nel database</h1>
+	  <div th:if="${consoles == null || consoles.isEmpty()}">Non ci sono Console nel sistema</div>
 	 
 	    <ul>
 	      <li th:each="console : ${consoles}">
 	        <a th:href="@{'/user/consoleUser' + '/' + ${console.id}}"
-	        	th:text = "${console.name} + ' ' + ${console.anno}">
+	        	th:text = "${console.name} + ' ' + ${console.anno}">Play (2000)
 	          <!--<img class="card-img-top" th:src="@{'data:image;base64,' + ${movie.photo}}"
 	               alt="Card image cap"> -->
 	        </a>
@@ -54,7 +54,7 @@
 	</body>
 <footer>
   <div class="footer_div">
-    <a href="/">
+    <a href="/user/indexUser">
       <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Torna indietro</button>
     </a>
   </div>

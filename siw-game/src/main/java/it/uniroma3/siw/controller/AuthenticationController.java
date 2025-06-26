@@ -62,7 +62,7 @@ public class AuthenticationController {
 	        return "index.html"; // fallback
 	    }
 
-	    Credentials credentials = credentialsService.getCredentials(username);
+	    Credentials credentials = credentialsService.getCredentialsByUsername(username);
 
 	    if (credentials != null && Credentials.ADMIN_ROLE.equals(credentials.getRole())) {
 	        return "admin/indexAdmin.html";
@@ -92,7 +92,7 @@ public class AuthenticationController {
             return "index.html";
         }
 
-        Credentials credentials = credentialsService.getCredentials(username);
+        Credentials credentials = credentialsService.getCredentialsByUsername(username);
 
         if (credentials != null && Credentials.ADMIN_ROLE.equals(credentials.getRole())) {
             return "admin/indexAdmin.html";

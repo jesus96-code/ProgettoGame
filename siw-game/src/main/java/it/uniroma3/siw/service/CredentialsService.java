@@ -25,14 +25,29 @@ public class CredentialsService {
 		Optional<Credentials> result = this.credentialsRepository.findById(id);
 		return result.orElse(null);
 	}
-
+	
 	@Transactional
-	public Credentials getCredentials(String username) {
-		Credentials result = this.credentialsRepository.findByUsername(username);
-		return result;
+	public void saveOAuthCredentials(Credentials credentials) {
+	    // Nessuna password, nessuna codifica
+	    credentialsRepository.save(credentials);
+	}
+
+//	@Transactional
+//	public Credentials getCredentials(String username) {
+//		Credentials result = this.credentialsRepository.findByUsername(username);
+//		return result;
+//	}
+	
+	public Credentials getCredentialsByEmail(String email) {
+	    return credentialsRepository.findByEmail(email)
+	    		 .orElseThrow(() -> new RuntimeException("Credenziali non trovate per l'email: " + email));
 	}
 	
-		
+	public Credentials getCredentialsByUsername(String username) {
+	    return credentialsRepository.findByUsername(username)
+	        .orElseThrow(() -> new RuntimeException("Credenziali non trovate per lo username: " + username));
+	}
+	
     @Transactional
     public Credentials saveCredentials(Credentials credentials) {
         credentials.setRole(Credentials.ADMIN_ROLE);

@@ -5,6 +5,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,7 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import it.uniroma3.siw.controller.validator.ReviewValidator;
 import it.uniroma3.siw.model.Console;
+import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.Review;
+import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.service.ConsoleService;
 import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.ReviewService;
@@ -44,8 +50,32 @@ public class ReviewController {
 	 
 	 @PostMapping("/user/review/{consoleId}")
 	    public String newReview(@Valid @ModelAttribute Review review, BindingResult bindingResult,
-	                                   @PathVariable("consoleId") Long consoleId, Model model) {
+	                                   @PathVariable("consoleId") Long consoleId, Model model, Authentication authentication) {
 	        if (!bindingResult.hasErrors()) {
+	        	String email = null;
+
+	            // Ottieni il principal in modo sicuro
+	            Object principal = authentication.getPrincipal();
+
+	            if (principal instanceof OidcUser ) {
+	            	OidcUser oidcUser = (OidcUser) principal;
+	                email = oidcUser.getEmail(); // Google OAuth2
+	            } else if (principal instanceof UserDetails) {
+	            	 UserDetails userDetails = (UserDetails) principal;
+	                email = userDetails.getUsername(); // Login locale
+	            }
+
+	            if (email == null) {
+	                throw new RuntimeException("Impossibile determinare l’email dell’utente loggato");
+	            }
+	            
+	            // Recupera le credenziali e l’utente associato
+	            Credentials credentials = credentialsService.getCredentialsByEmail(email);
+	            User user = credentials.getUser();
+
+	            // Associa la review all’utente
+	            review.setUser(user);
+	            
 	            Review newReview = this.reviewService.newReview(review, consoleId);
 	            Console console = this.consoleService.addReviewToConsole(consoleId, newReview.getId());
 	            model.addAttribute("console", console);

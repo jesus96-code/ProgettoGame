@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.uniroma3.siw.authentication.AuthenticationUtils;
 import it.uniroma3.siw.model.Console;
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.Review;
@@ -28,6 +29,9 @@ public class ReviewService {
 	
 	@Autowired
 	private CredentialsService credentialsService;
+	
+	@Autowired
+	private AuthenticationUtils authenticationUtils;
 	
 	@Autowired 
 	private UserService userService;
@@ -72,18 +76,31 @@ public class ReviewService {
 	
 	@Transactional
     public Review newReview(@Valid Review review, Long consoleId) {
-        Console console = this.consoleRepository.findById(consoleId).get();
-        //recupera l'utente attualmente autenticato dal contesto di sicurezza
-        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //ottengo le credenziali dell'utente autenticato, utilizzando il nome utente
-        Credentials credentials = credentialsService.getCredentials(user.getUsername());
-        review.setConsole(console); //imposta il film assocciato alla recensione
-        review.setReviewer(credentials.getUser()); // imposta l'utente che ha scritto la recensione
-        this.reviewRepository.save(review); // salva la recensione nel repository
-//        List<Review> reviews = movie.getReviews();
-//        movie.getReviews().add(review);
-//        this.movieRepository.save(movie);
-        return review;
+//        Console console = this.consoleRepository.findById(consoleId).get();
+////        //recupera l'utente attualmente autenticato dal contesto di sicurezza
+////        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+////        //ottengo le credenziali dell'utente autenticato, utilizzando il nome utente
+//        Credentials credentials = credentialsService.getCredentials(email);
+//        review.setConsole(console); //imposta il film assocciato alla recensione
+//        review.setReviewer(credentials.getUser()); // imposta l'utente che ha scritto la recensione
+//        this.reviewRepository.save(review); // salva la recensione nel repository
+////        List<Review> reviews = movie.getReviews();
+////        movie.getReviews().add(review);
+////        this.movieRepository.save(movie);
+//        return review;
+		Console console = this.consoleRepository.findById(consoleId).get();
+
+		// Ottieni l'utente autenticato in modo unificato
+	    User currentUser = authenticationUtils.getAuthenticatedUser();
+
+	    // Assegna console e utente alla recensione
+	    review.setConsole(console);
+	    review.setReviewer(currentUser);
+
+	    // Salva la recensione
+	    this.reviewRepository.save(review);
+
+	    return review;
     }
 	
 	 @Transactional

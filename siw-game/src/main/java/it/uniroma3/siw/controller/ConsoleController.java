@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import it.uniroma3.siw.authentication.AuthenticationUtils;
 import it.uniroma3.siw.controller.validator.ConsoleValidator;
 import it.uniroma3.siw.model.Console;
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.Games;
 import it.uniroma3.siw.model.Review;
+import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.repository.ConsoleRepository;
 import it.uniroma3.siw.repository.GameRepository;
 import it.uniroma3.siw.service.ConsoleService;
@@ -49,6 +51,9 @@ public class ConsoleController {
 	
 	@Autowired
 	private ReviewService reviewService;
+	
+	@Autowired
+	private AuthenticationUtils authenticationUtils;
 
 	@GetMapping(value="/admin/formNewConsole")
 	public String formNewConsole(Model model) {
@@ -240,25 +245,20 @@ public class ConsoleController {
 //		Credentials credentials = credentialsService.getCredentials(user.getUsername());
 //		model.addAttribute("user", credentials.getUser());
 //		model.addAttribute("consoles", this.consoleRepository.findAll());
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    String email = null;
-
-	    if (principal instanceof OidcUser) {
-	        OidcUser oidcUser = (OidcUser) principal;
-	        email = oidcUser.getEmail(); // oppure: (String) oidcUser.getAttributes().get("email")
-	    } else if (principal instanceof UserDetails) {
-	        email = ((UserDetails) principal).getUsername();
-	    }
-
-	    Credentials credentials = credentialsService.getCredentials(email);
-	    if (credentials == null) {
-	        return "redirect:/registerGoogle"; // o gestisci come vuoi
-	    }
-
-	    model.addAttribute("user", credentials.getUser()); // User ha nome/cognome
-	    model.addAttribute("username", credentials.getUsername()); // email
-	    model.addAttribute("consoles", consoleRepository.findAll());
+		User user = authenticationUtils.getAuthenticatedUser(); // corretto per entrambi i casi
+	    model.addAttribute("user", user);
+	    
+	    List<Console> consoles = (List<Console>) consoleRepository.findAll(); // recupera tutte le console
+	    model.addAttribute("consoles", consoles);
+	    
 		return "user/consolesUser.html";
+	}
+	
+	@GetMapping("user/indexUser")
+	public String indexUser(Model model) {
+	    User user = authenticationUtils.getAuthenticatedUser(); // corretto per entrambi i casi
+	    model.addAttribute("user", user);
+	    return "user/indexUser.html";
 	}
 
 	@GetMapping("/user/consoleUser/{id}")

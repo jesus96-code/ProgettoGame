@@ -7,13 +7,33 @@
 
 <body>
 	<header>
-		<div th:if="${#request.userPrincipal}">
+		<!-- <div th:if="${#request.userPrincipal}">
 			<span th:text="${#request.userPrincipal.principal.username}"></span>
 			<a href="/logout">Logout</a>
 		</div>
 		<div th:unless="${#request.userPrincipal}">
 			<a href="/login">Login</a>
-		</div>
+		</div>  -->
+		
+		<div th:if="${#request.userPrincipal}">
+		        <!-- Se è un utente OAuth2 (Google) -->
+		        <span th:if="${#request.userPrincipal.principal instanceof T(org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser)}"
+		              th:text="${#request.userPrincipal.principal.attributes['email']}">[OAuth2 User]</span>
+		
+		        <!-- Se è un utente locale -->
+		        <span th:if="${#request.userPrincipal.principal instanceof T(org.springframework.security.core.userdetails.User)}"
+		              th:text="${#request.userPrincipal.name}">[Utente Locale]</span>
+		
+		        <a href="/logout">
+		            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Logout</button>
+		        </a>
+			    </div>
+			
+			    <div th:unless="${#request.userPrincipal}">
+			        <a href="/login">
+			            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
+			        </a>
+			    </div>
 	</header>
 
 	<div><a href="/"><img src="/images/logo-game.png" width="50%"/></a></div>

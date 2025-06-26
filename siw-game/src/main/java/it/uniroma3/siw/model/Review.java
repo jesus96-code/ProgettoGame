@@ -35,6 +35,9 @@ public class Review {
 	
 	@ManyToOne
 	private Console console;
+	
+	@ManyToOne
+	private User user;
 
 	public String getTitle() {
 		return title;
@@ -87,6 +90,14 @@ public class Review {
 	@Override
 	public int hashCode() {
 		return Objects.hash(console, reviewer);
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
