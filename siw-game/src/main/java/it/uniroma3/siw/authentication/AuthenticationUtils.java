@@ -31,7 +31,7 @@ public class AuthenticationUtils {
         	OidcUser oidcUser = (OidcUser) principal;
             String email = oidcUser.getEmail();
          // Prova a trovare le credenziali
-            Optional<Credentials> optionalCred = credentialsRepository.findByEmail(email);
+            Optional<Credentials> optionalCred = credentialsRepository.findByUsername(email);
 
             if (optionalCred.isEmpty()) {
             	User user = new User();
@@ -39,8 +39,8 @@ public class AuthenticationUtils {
                 user.setSurname(oidcUser.getFamilyName());
                 user.setEmail(email);
 
-                 credentials = new Credentials();
-                credentials.setEmail(email);
+                credentials = new Credentials();
+//                credentials.setEmail(email);
                 credentials.setRole(Credentials.DEFAULT_ROLE); // ad esempio "USER"
                 credentials.setUser(user);
 
@@ -54,7 +54,7 @@ public class AuthenticationUtils {
                 user.setEmail(email);
 
                 credentials = new Credentials();
-                credentials.setEmail(email);
+//                credentials.setEmail(email);
                 credentials.setRole(Credentials.DEFAULT_ROLE); // ad esempio "USER"
                 credentials.setUser(user);
 

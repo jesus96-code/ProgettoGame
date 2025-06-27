@@ -38,20 +38,19 @@ public class CredentialsService {
 //		return result;
 //	}
 	
-	public Credentials getCredentialsByEmail(String email) {
-	    return credentialsRepository.findByEmail(email)
-	    		 .orElseThrow(() -> new RuntimeException("Credenziali non trovate per l'email: " + email));
-	}
-	
 	public Credentials getCredentialsByUsername(String username) {
-	    return credentialsRepository.findByUsername(username)
-	        .orElseThrow(() -> new RuntimeException("Credenziali non trovate per lo username: " + username));
+	    return credentialsRepository.findByUsername(username).orElse(null);
 	}
 	
     @Transactional
     public Credentials saveCredentials(Credentials credentials) {
-        credentials.setRole(Credentials.ADMIN_ROLE);
-        credentials.setPassword(this.passwordEncoder.encode(credentials.getPassword()));
+    	if (credentials.getRole() == null) {
+            credentials.setRole(Credentials.DEFAULT_ROLE); // assegna DEFAULT se non specificato
+        }
+
+        if (credentials.getPassword() != null) {
+            credentials.setPassword(this.passwordEncoder.encode(credentials.getPassword()));
+        }
         return this.credentialsRepository.save(credentials);
     }
 }

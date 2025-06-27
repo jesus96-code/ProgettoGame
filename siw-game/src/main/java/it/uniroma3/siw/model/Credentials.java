@@ -18,11 +18,10 @@ public class Credentials {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 	
-	@Column(unique = true)
+	@Column(unique=true, nullable = false)
 	private String username;
 	private String password;
 	private String role;
-	private String email;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private User user;
@@ -65,14 +64,6 @@ public class Credentials {
 	
 	public void setRole(String role) {
 		this.role = role;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 }

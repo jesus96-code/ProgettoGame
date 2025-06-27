@@ -90,11 +90,12 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 //        	    	.defaultSuccessUrl("/success", true);
 		
         .oauth2Login()
-        .loginPage("/login")
-        .userInfoEndpoint()
-            .oidcUserService(customOidcUserService)
-            .and()
-        .defaultSuccessUrl("/user/indexUser", true);// <== reindirizza utente loggato
+	        .loginPage("/login")
+	        .userInfoEndpoint()
+	            .oidcUserService(customOidcUserService)
+			.and()
+				.defaultSuccessUrl("/success", true);
+        //.defaultSuccessUrl("/user/indexUser", true);// <== reindirizza utente loggato
 		
 //        .oauth2Login()
 //        	    .loginPage("/login") // stessa pagina login per entrambi

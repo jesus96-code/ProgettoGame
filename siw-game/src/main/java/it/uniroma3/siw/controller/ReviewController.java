@@ -70,7 +70,7 @@ public class ReviewController {
 	            }
 	            
 	            // Recupera le credenziali e l’utente associato
-	            Credentials credentials = credentialsService.getCredentialsByEmail(email);
+	            Credentials credentials = credentialsService.getCredentialsByUsername(email);
 	            User user = credentials.getUser();
 
 	            // Associa la review all’utente

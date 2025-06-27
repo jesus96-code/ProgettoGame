@@ -1,9 +1,6 @@
 package it.uniroma3.siw.service;
 
-import java.util.List;
 import java.util.Optional;
-
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
@@ -11,6 +8,7 @@ import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.User;
@@ -26,28 +24,16 @@ public class CustomOidcUserService extends OidcUserService {
     @Autowired
     private CredentialsRepository credentialsRepository;
     
+    @Autowired
+    private OAuthUserService oAuthUserService;
+    
     @Override
     @Transactional
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
     	OidcUser oidcUser = super.loadUser(userRequest);
 
-        String email = oidcUser.getEmail(); // oppure: (String) oidcUser.getAttributes().get("email")
-        
-        Optional<Credentials> existingCredentials = credentialsRepository.findByUsername(email);
-
-        if (existingCredentials == null) {
-            // Primo login: crea utente e credenziali
-            User user = new User();
-            user.setName(oidcUser.getGivenName());
-            user.setSurname(oidcUser.getFamilyName());
-
-            Credentials newCredentials = new Credentials();
-            newCredentials.setUsername(email);
-            newCredentials.setRole(Credentials.DEFAULT_ROLE);
-            newCredentials.setUser(user);
-
-            credentialsRepository.save(newCredentials);
-        }
+        // Salva utente e credenziali solo se non esistono
+        oAuthUserService.createUserIfNotExists(oidcUser);
 
         return oidcUser;
     }

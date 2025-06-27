@@ -83,16 +83,20 @@ public class AuthenticationController {
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         String username;
+        
+        Credentials credentials = null;
 
         if (principal instanceof UserDetails) {
+        	//login classicon con username
             username = ((UserDetails) principal).getUsername();
+            credentials = credentialsService.getCredentialsByUsername(username);
         } else if (principal instanceof OidcUser) {
+        	//login con google
             username = ((OidcUser) principal).getEmail();
+            credentials = credentialsService.getCredentialsByUsername(username);
         } else {
             return "index.html";
         }
-
-        Credentials credentials = credentialsService.getCredentialsByUsername(username);
 
         if (credentials != null && Credentials.ADMIN_ROLE.equals(credentials.getRole())) {
             return "admin/indexAdmin.html";
