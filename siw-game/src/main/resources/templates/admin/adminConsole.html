@@ -18,11 +18,11 @@
 </header>
 
 <div><a href="/"><img src="/images/logo1.png" width="50%"/></a></div>
-<h1 th:if="${console}" th:text="${console.name + ' (' + console.anno + ')'}">Dettagli Film</h1>
+<h1 th:if="${console}" th:text="${console.name + ' (' + console.anno + ')'}">Dettagli Console</h1>
 <ul>
 	<div th:unless="${console}"> Non esiste </div>
 
-	<!-- regista -->
+	<!-- director -->
 	<div th:if="${console.director}">
 		<h2>Direttore:</h2>
 		<span th:text="${console.director.name}"></span>
@@ -31,7 +31,7 @@
 		<h2>Nessun direttore per questo film</h2>
 	</div>
 
-	<!-- attori -->
+	<!-- games -->
 	<div th:if="${!console.games.isEmpty()}">
 		<h2>Giochi:</h2>
 		<li th:each="game : ${console.games}">
@@ -41,12 +41,6 @@
 	<div th:unless="${!console.games.isEmpty()}">
 		<h2>Non ci sono games per questo console</h2>
 	</div>
-
-	<!-- immagini 
-	<div>
-		<h2>Locandina: </h2>
-		<span><img width="30%" th:src="@{'data:image;base64,' + ${movie.photo}}"/></span>
-	</div>-->
 
 	<!-- recensioni -->
 	<div th:if="${!console.reviews.isEmpty()}">

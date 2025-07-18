@@ -41,7 +41,6 @@ header span {
 
 /* Logo */
 .logo img {
-    max-width: 200px;
     margin-top: 20px;
 }
 
@@ -89,7 +88,7 @@ input:focus {
 }
 
 /* Messaggi di errore */
-span[th\\:errors] {
+span[th\\errors] {
     color: red;
     font-size: 0.9em;
     display: block;

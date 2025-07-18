@@ -17,7 +17,6 @@ body {
 /* Header */
 header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     background-color: #222;
     color: white;
@@ -26,7 +25,6 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 header div {
@@ -53,7 +51,7 @@ div a {
     padding: 10px 15px;
     border-radius: 5px;
     text-decoration: none;
-    transition: background 0.3s ease-in-out;
+	transition: background 0.3s ease-in-out;
     margin-bottom: 20px;
 }
 
@@ -96,7 +94,7 @@ li a:hover {
 }
 
 /* Messaggio "Non ci sono console" */
-div[th\\:if] {
+div[th\\if] {
     font-style: italic;
     color: red;
     margin-bottom: 20px;

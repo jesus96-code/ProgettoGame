@@ -7,13 +7,6 @@
 
 <body>
 	<header>
-		<!--  <div th:if="${#request.userPrincipal}">
-			<span th:text="${#request.userPrincipal.principal.username}"></span>
-			<a href="/logout">Logout</a>
-		</div>
-		<div th:unless="${#request.userPrincipal}">
-			<a href="/login">Login</a>
-		</div>-->
 		<div th:if="${#request.userPrincipal}">
 		        <!-- Se è un utente OAuth2 (Google) -->
 		        <span th:if="${#request.userPrincipal.principal instanceof T(org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser)}"
@@ -57,8 +50,9 @@
      		<h3>Nessun gioco esclusivo per questa console</h3>
      	</div>
     </div>
-        
-        <span><img width="5%" th:src=${console.urlImage} /></span> 
+        <div class="img">
+        	<span><img th:src=${console.urlImage} width="30%"/></span>
+        </div>
         <h2>Recensioni:</h2>
     		<div th:if="${!console.reviews.isEmpty()}">
 	            <ul>
