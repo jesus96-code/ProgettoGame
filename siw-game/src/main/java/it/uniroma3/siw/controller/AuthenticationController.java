@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.User;
+import it.uniroma3.siw.repository.GameRepository;
 import it.uniroma3.siw.service.CredentialsService;
 
 @Controller
@@ -24,6 +25,9 @@ public class AuthenticationController {
 	
 	@Autowired
 	private CredentialsService credentialsService;
+	
+	@Autowired
+	private GameRepository gameRepository;
 	
 	@GetMapping(value = "/register") 
 	public String showRegisterForm (Model model) {
@@ -84,19 +88,15 @@ public class AuthenticationController {
         Object principal = authentication.getPrincipal();
         String username;
         
-        Credentials credentials = null;
-
         if (principal instanceof UserDetails) {
-        	//login classicon con username
-            username = ((UserDetails) principal).getUsername();
-            credentials = credentialsService.getCredentialsByUsername(username);
-        } else if (principal instanceof OidcUser) {
-        	//login con google
-            username = ((OidcUser) principal).getEmail();
-            credentials = credentialsService.getCredentialsByUsername(username);
-        } else {
-            return "index.html";
-        }
+	        username = ((UserDetails) principal).getUsername();
+	    } else if (principal instanceof OidcUser) {
+	        username = ((OidcUser) principal).getEmail(); // oppure getPreferredUsername()
+	    } else {
+	        return "index.html"; // fallback
+	    }
+
+	    Credentials credentials = credentialsService.getCredentials(username);
 
         if (credentials != null && Credentials.ADMIN_ROLE.equals(credentials.getRole())) {
             return "admin/indexAdmin.html";
@@ -121,4 +121,6 @@ public class AuthenticationController {
         }
         return "registerUser";
     }
+	
+	
 }

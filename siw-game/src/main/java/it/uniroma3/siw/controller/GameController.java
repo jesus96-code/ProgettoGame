@@ -12,12 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import it.uniroma3.siw.model.Games;
 import it.uniroma3.siw.repository.GameRepository;
+import it.uniroma3.siw.service.GameService;
 
 @Controller
 public class GameController {
 	
 	@Autowired 
 	private GameRepository gameRepository;
+	
+	@Autowired 
+	private GameService gameService;
 
 	@GetMapping(value="/admin/formNewGame")
 	public String formNewGame(Model model) {
@@ -53,12 +57,5 @@ public class GameController {
 		model.addAttribute("games", this.gameRepository.findAll());
 		return "games.html";
 	}
-	
-	@GetMapping("/admin/indexAdmin")
-	public String conteoEntita(Model model) {
-		Long conte = this.gameRepository.count();
-	    System.out.println("Conteggio: " + conte); // ← aggiungi questo per debug
-		model.addAttribute("conta", conte);
-		return "success.html";
-	}
+
 }

@@ -111,5 +111,14 @@ public class ReviewController {
         model.addAttribute("reviews", reviews);
         return "reviews.html";
     }
+	
+	@GetMapping("/user/deleteReview/{reviewId}/{consoleId}")
+	public String deleteRecensione(@PathVariable("reviewId") Long reviewId, @PathVariable("consoleId") Long consoleId, Model model) {
+		this.reviewService.deleteReview(reviewId);
+		Console console = this.consoleService.getConsoleById(consoleId);
+		model.addAttribute("console", console);
+		model.addAttribute("recensione", console.getReviews());
+		return "user/consoleUser";
+	}
 
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -18,13 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import it.uniroma3.siw.authentication.AuthenticationUtils;
 import it.uniroma3.siw.controller.validator.ConsoleValidator;
 import it.uniroma3.siw.model.Console;
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.Games;
 import it.uniroma3.siw.model.Review;
-import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.repository.ConsoleRepository;
 import it.uniroma3.siw.repository.GameRepository;
 import it.uniroma3.siw.service.ConsoleService;
@@ -51,9 +48,6 @@ public class ConsoleController {
 	
 	@Autowired
 	private ReviewService reviewService;
-	
-	@Autowired
-	private AuthenticationUtils authenticationUtils;
 
 	@GetMapping(value="/admin/formNewConsole")
 	public String formNewConsole(Model model) {
@@ -232,23 +226,48 @@ public class ConsoleController {
 	
 	@GetMapping(value = "/user/consolesUser")
 	public String getUserConsoles(Model model) {
-//		UserDetails user = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		Credentials credentials = credentialsService.getCredentials(user.getUsername());
-//		model.addAttribute("user", credentials.getUser());
-//		model.addAttribute("consoles", this.consoleRepository.findAll());
-		User user = authenticationUtils.getAuthenticatedUser(); // corretto per entrambi i casi
-	    model.addAttribute("user", user);
-	    
-	    List<Console> consoles = (List<Console>) consoleRepository.findAll(); // recupera tutte le console
-	    model.addAttribute("consoles", consoles);
-	    
-		return "user/consolesUser.html";
+		//SecurityContextHolder per ottenere l'oggetto che rappresenta l'utente attualmente loggato
+				Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			    String email = null;
+
+			    if (principal instanceof OidcUser) {
+			        email = ((OidcUser) principal).getEmail(); // login con Google
+			    } else if (principal instanceof UserDetails) {
+			        email = ((UserDetails) principal).getUsername(); // login classico
+			    } else {
+			        throw new IllegalStateException("Tipo di autenticazione non riconosciuto: " + principal.getClass());
+			    }
+
+			    Credentials credentials = credentialsService.getCredentials(email); //recupera le credenziali dal DB
+			    if (credentials == null) {
+			        return "redirect:/registerGoogle"; // reindirizza alla pagina di registrazione
+			    }
+
+			    model.addAttribute("user", credentials.getUser());
+			    model.addAttribute("libri", this.consoleRepository.findAll());
+				return "user/libriUser.html";		
 	}
 	
 	@GetMapping("user/indexUser")
 	public String indexUser(Model model) {
-	    User user = authenticationUtils.getAuthenticatedUser(); // corretto per entrambi i casi
-	    model.addAttribute("user", user);
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String email = null;
+
+	    if (principal instanceof OidcUser) {
+	        email = ((OidcUser) principal).getEmail(); // login con Google
+	    } else if (principal instanceof UserDetails) {
+	        email = ((UserDetails) principal).getUsername(); // login classico
+	    } else {
+	        throw new IllegalStateException("Tipo di utente non supportato: " + principal.getClass());
+	    }
+
+	    Credentials credentials = credentialsService.getCredentials(email);
+	    if (credentials == null) {
+	        return "redirect:/registerGoogle"; // se utente Google non è ancora nel DB
+	    }
+
+	    model.addAttribute("user", credentials.getUser());
+	    model.addAttribute("username", credentials.getUsername());
 	    return "user/indexUser.html";
 	}
 

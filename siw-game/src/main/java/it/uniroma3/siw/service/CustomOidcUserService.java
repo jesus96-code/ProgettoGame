@@ -24,16 +24,31 @@ public class CustomOidcUserService extends OidcUserService {
     @Autowired
     private CredentialsRepository credentialsRepository;
     
-    @Autowired
-    private OAuthUserService oAuthUserService;
     
     @Override
     @Transactional
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
-    	OidcUser oidcUser = super.loadUser(userRequest);
+    	OidcUser oidcUser = super.loadUser(userRequest); // carica i dati utente da Google o altro provider 
+    	// oidcUser conterrà le info dell'utente loggato: email, nome, cognome, id, ecc
+        String email = oidcUser.getEmail(); // oppure: (String) oidcUser.getAttributes().get("email")
+        // controlla nel database se esiste già un utente con quell'email come username
+        Credentials existingCredentials = credentialsRepository.findByUsername(email);
 
-        // Salva utente e credenziali solo se non esistono
-        oAuthUserService.createUserIfNotExists(oidcUser);
+        if (existingCredentials == null) {
+            // Primo login: crea utente e credenziali
+            User user = new User();
+            user.setName(oidcUser.getGivenName());
+            user.setSurname(oidcUser.getFamilyName());
+            
+            // crea e configura un oggetto Credentials
+            Credentials newCredentials = new Credentials();
+            newCredentials.setUsername(email); //l'email diventa il login 
+            newCredentials.setRole(Credentials.DEFAULT_ROLE);
+            newCredentials.setUser(user); //collega l'oggetto User appena creato
+            
+            //utente viene registrato nel DB
+            credentialsRepository.save(newCredentials);
+        }
 
         return oidcUser;
     }
