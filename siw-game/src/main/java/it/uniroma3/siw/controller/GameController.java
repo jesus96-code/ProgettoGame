@@ -1,5 +1,7 @@
 package it.uniroma3.siw.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,5 +52,13 @@ public class GameController {
 	public String getGames(Model model) {
 		model.addAttribute("games", this.gameRepository.findAll());
 		return "games.html";
+	}
+	
+	@GetMapping("/admin/indexAdmin")
+	public String conteoEntita(Model model) {
+		Long conte = this.gameRepository.count();
+	    System.out.println("Conteggio: " + conte); // ← aggiungi questo per debug
+		model.addAttribute("conta", conte);
+		return "success.html";
 	}
 }

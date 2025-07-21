@@ -7,66 +7,66 @@
 </head>
 
 <body>
-<header>
-	<div th:if="${#request.userPrincipal}">
-		<span th:text="${#request.userPrincipal.principal.username}"></span>
-		<a href="/logout">Logout</a>
-	</div>
-	<div th:unless="${#request.userPrincipal}">
-		<a href="/login">Login</a>
-	</div>
-</header>
+	<header>
+		<div th:if="${#request.userPrincipal}">
+			<span th:text="${#request.userPrincipal.principal.username}"></span>
+			<a href="/logout">Logout</a>
+		</div>
+		<div th:unless="${#request.userPrincipal}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
 
-<div><a href="/"><img src="/images/logo1.png" width="50%"/></a></div>
-<h1 th:if="${console}" th:text="${console.name + ' (' + console.anno + ')'}">Dettagli Console</h1>
-<ul>
-	<div th:unless="${console}"> Non esiste </div>
-
-	<!-- director -->
-	<div th:if="${console.director}">
-		<h2>Direttore:</h2>
-		<span th:text="${console.director.name}"></span>
-	</div>
-	<div th:unless="${console.director}">
-		<h2>Nessun direttore per questo film</h2>
-	</div>
-
-	<!-- games -->
-	<div th:if="${!console.games.isEmpty()}">
-		<h2>Giochi:</h2>
-		<li th:each="game : ${console.games}">
-			<span th:text="${game.name}"> </span>
-		</li>
-	</div>
-	<div th:unless="${!console.games.isEmpty()}">
-		<h2>Non ci sono games per questo console</h2>
-	</div>
-
-	<!-- recensioni -->
-	<div th:if="${!console.reviews.isEmpty()}">
-		<h2>Recensioni:</h2>
-		<li th:each="review: ${console.reviews}">
-			<span> Titolo: </span>
-			<span th:text="${review.title}"></span>
-			<span> Voto: </span>
-			<span th:text="${review.rate}"></span>
-			<span> Recensione: </span>
-			<span th:text="${review.comment}"></span>
-		</li>
-	</div>
-	<div th:unless="${!console.reviews.isEmpty()}">
-		<h2>Non ci recensioni per questo console</h2>
-	</div>
-
-	<div>
-		<h2>Recensioni:</h2>
-	<div th:unless="${console.reviews.isEmpty()}">Non ci sono recensioni</div>
-	<li th:each="review : ${console.reviews}">
-		<span th:text="${review.title}"></span>
-		<a th:href="@{'/admin/deleteReview/' + ${review.id} + '/' + ${console.id}}">Cancella Recensione</a>
-	</li>
-	</div>
-</ul>
+	<div><a href="/"><img src="/images/logo1.png" width="50%"/></a></div>
+	<h1 th:if="${console}" th:text="${console.name + ' (' + console.anno + ')'}">Dettagli Console</h1>
+	<ul>
+		<div th:unless="${console}"> Non esiste </div>
+	
+		<!-- director -->
+		<div th:if="${console.director}">
+			<h2>Direttore:</h2>
+			<span th:text="${console.director.name}"></span>
+		</div>
+		<div th:unless="${console.director}">
+			<h2>Nessun direttore per questo film</h2>
+		</div>
+	
+		<!-- games -->
+		<div th:if="${!console.games.isEmpty()}">
+			<h2>Giochi:</h2>
+			<li th:each="game : ${console.games}">
+				<span th:text="${game.name}"> </span>
+			</li>
+		</div>
+		<div th:unless="${!console.games.isEmpty()}">
+			<h2>Non ci sono games per questo console</h2>
+		</div>
+	
+		<!-- recensioni -->
+		<div th:if="${!console.reviews.isEmpty()}">
+			<h2>Recensioni:</h2>
+			<li th:each="review: ${console.reviews}">
+				<span> Titolo: </span>
+				<span th:text="${review.title}"></span>
+				<span> Voto: </span>
+				<span th:text="${review.rate}"></span>
+				<span> Recensione: </span>
+				<span th:text="${review.comment}"></span>
+			</li>
+		</div>
+		<div th:unless="${!console.reviews.isEmpty()}">
+			<h2>Non ci recensioni per questo console</h2>
+		</div>
+	
+		<div>
+			<h2>Recensioni:</h2>
+		<div th:unless="${console.reviews.isEmpty()}">Non ci sono recensioni</div>
+			<li th:each="review : ${console.reviews}">
+				<span th:text="${review.title}"></span>
+				<a th:href="@{'/admin/deleteReview/' + ${review.id} + '/' + ${console.id}}">Cancella Recensione</a>
+			</li>
+		</div>
+	</ul>
 </body>
 
 </html>

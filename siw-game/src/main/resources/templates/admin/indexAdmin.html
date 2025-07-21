@@ -9,18 +9,6 @@
 </head>
 
 <header>
-    <!--  <div th:if="${#request.userPrincipal}">
-        <span th:text="${#request.userPrincipal.principal.username}"></span>
-        <a href="/logout">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Logout</button>
-        </a>
-    </div>
-    <div th:unless="${#request.userPrincipal}">
-        <a href="/login">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
-        </a>
-    </div>-->
-    
     <div th:if="${#request.userPrincipal}">
 		        <!-- Se è un utente OAuth2 (Google) -->
 		        <span th:if="${#request.userPrincipal.principal instanceof T(org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser)}"
@@ -56,7 +44,8 @@
 		<a href="/admin/indexGame">Operazioni sui giochi</a>
 	</div>
 	<div>
-		<a href="/game">Elenco games</a>
+		<a href="/game">Elenco games</a>  
+		<h2 th:text="'Totale entita: ' + ${conta}">Totale entità: 4</h2>
 	</div>
 	
 	<!--- Messaggio per l'amministratore--->

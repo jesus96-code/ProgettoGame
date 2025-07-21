@@ -63,16 +63,7 @@ public class ConsoleController {
 
 	@GetMapping(value="/admin/formUpdateConsole/{id}")
 	public String formUpdateConsole(@PathVariable("id") Long id, Model model) {
-//		Movie movie = movieService.findMovieById(id);
-//		if(movie != null) {
-//			model.addAttribute("actorCount", movie.getActors().size());
-//			model.addAttribute("movie", movie);
-//		}
-//		else {
-//			model.addAttribute("movie", null);
-//		}
-//		return "admin/formUpdateMovie.html";
-		//aggiunge al modello un film con un certo id
+		//aggiunge al modello una console con un certo id
 		model.addAttribute("console", consoleService.getConsoleById(id));
 		return "admin/formUpdateConsole.html";
 	}
@@ -108,19 +99,19 @@ public class ConsoleController {
 		return "admin/manageConsoles.html";
 	}
 	
-	@GetMapping(value="/admin/setDirectorToConsole/{directorId}/{consoleId}")
-	public String setDirectorToConsole(@PathVariable("directorId") Long directorId, @PathVariable("consoleId") Long consoleId, Model model) {	
-		Console console =  this.consoleService.saveGiocoEsclusivoToConsole(consoleId, directorId);		
+	@GetMapping(value="/admin/setGiocoEsclusivoToConsole/{giocoEsclusivoId}/{consoleId}")
+	public String setGiocoEsclusivoToConsole(@PathVariable("giocoEsclusivoId") Long giocoEsclusivoId, @PathVariable("consoleId") Long consoleId, Model model) {	
+		Console console =  this.consoleService.saveGiocoEsclusivoToConsole(consoleId, giocoEsclusivoId);		
 		model.addAttribute("console", console);
 		return "admin/formUpdateConsole.html";
 	}
 	
 	
 	@GetMapping(value="/admin/addGame/{id}")
-	public String addDirector(@PathVariable("id") Long id, Model model) {
+	public String addGame(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("games", gameRepository.findAll());
 		model.addAttribute("console", consoleRepository.findById(id).get());
-		return "admin/directorsToAdd.html";
+		return "admin/gameToAdd.html";
 	}
 
 	@PostMapping(value="/console")

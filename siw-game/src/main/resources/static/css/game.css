@@ -79,7 +79,7 @@ h1 {
 }
 
 /* Dettagli Gioco */
-div[th:if], div[th:unless] {
+div[th\\if], div[th\\unless] {
     background-color: white;
     max-width: 600px;
     margin: 20px auto;
@@ -89,7 +89,7 @@ div[th:if], div[th:unless] {
     text-align: center;
 }
 
-div[th:if] span {
+div[th\\if] span {
     font-size: 1.5em;
     font-weight: bold;
     display: block;
@@ -98,14 +98,14 @@ div[th:if] span {
 }
 
 /* Immagine Gioco */
-div[th:if] img {
+div[th\\if] img {
     max-width: 150px;
     border-radius: 5px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Messaggio di gioco non trovato */
-div[th:unless] {
+div[th\\unless] {
     font-size: 1.3em;
     color: red;
 }
@@ -152,7 +152,7 @@ footer button:hover {
         font-size: 2rem;
     }
 
-    div[th:if], div[th:unless] {
+    div[th\\if], div[th\\unless] {
         width: 90%;
     }
 }

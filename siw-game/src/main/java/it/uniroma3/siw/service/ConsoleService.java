@@ -56,22 +56,22 @@ public class ConsoleService {
 		Games giocoEsclusivo = gameRepository.findById(gameId).orElse(null);
 		Console console = this.findConsoleById(consoleId);
 		if(console != null && giocoEsclusivo != null) {
-			console.setGiocoEsclusivo(giocoEsclusivo); //imposta il director al movie
-			this.saveConsole(console); //salva il movie
+			console.setGiocoEsclusivo(giocoEsclusivo); //imposta un gioco esclusivo alla console
+			this.saveConsole(console); //salva la console
 			res = console;
 		}
 		return res;
 	}
 	
 	public Console saveGameToConsole(Long idC, Long idG) {
-		Console console = consoleRepository.findById(idC).get(); //trova il movie e estrarlo dalla repository
+		Console console = consoleRepository.findById(idC).get(); //trova la console e estrarlo dalla repository
 		Games game = gameRepository.findById(idG).get(); // la stessa cosa qua
 		if(console != null && game != null) {
-			List<Games> games = console.getGames(); // estrarre tutti gli attori del film
-			games.add(game); //aggiungi l'attore estratto
-			return this.consoleRepository.save(console); // salva il film nella repository
+			List<Games> games = console.getGames(); // estrarre tutti i giochi della console
+			games.add(game); //aggiungi il giochi estratto
+			return this.consoleRepository.save(console); // salva la console nella repository
 		}
-		return console; // se non compie la condizione allora ritorna il movie originale
+		return console; // se non compie la condizione allora ritorna la console originale
 	}
 	
 	@Transactional
@@ -93,15 +93,8 @@ public class ConsoleService {
 	
 	@Transactional
 	public void deleteConsole(Long consoleId) {
-		Console console = this.getConsoleById(consoleId); // prende l'id del movie
-//		List<Artist> actors = movie.getActors(); // prende tutti gli attori del movie
-//		for (Artist actor : actors) {
-//			actor.getStarredMovies().remove(movie);
-//		}
-//		if (movie.getDirector()!=null) {
-//			movie.getDirector().getDirectedMovies().remove(movie);
-//		}
-		List<Review> reviews = console.getReviews();
+		Console console = this.getConsoleById(consoleId); // prende l'id della console
+		List<Review> reviews = console.getReviews(); //prende tutte le recensioni della console
 		for (Review review : reviews) {
 			review.setConsole(null);
 		}
@@ -142,9 +135,9 @@ public class ConsoleService {
 	public Console addGameToConsole(Long consoleId, Long gameId) {
 		Console console = this.consoleRepository.findById(consoleId).get();
 		Games game = this.gameRepository.findById(gameId).get();
-		List<Games> games = console.getGames(); //prende la lista di tutti gli attori del film
-		games.add(game); //aggiunge l'attore alla lista degli attori
-		this.consoleRepository.save(console); //salva il movie aggiornato
+		List<Games> games = console.getGames(); //prende la lista di tutti i giochi della console
+		games.add(game); //aggiunge il gioco alla lista dei giochi
+		this.consoleRepository.save(console); //salva la console aggiornato
 		return console;
 	}
 }
