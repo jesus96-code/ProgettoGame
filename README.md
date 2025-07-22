@@ -40,6 +40,19 @@ Si presuppone che l'utente principale sia quello registrato con appositi permess
 
 Scenario principale di successo: E' altresì necessario ovviamente loggarsi al sistema con le proprie credenziali che verranno riconosciute da sistema come utenza amministrazione. L'amministratore(o amministrazione) cancella una recensione, questa influenza anche ai dati che sono contenuti al DB.
 
+Caso d'uso UC5 : Consulta informazione Attore principale: utente registrato 
+Si presuppone che l'utente registrato sia quello registrato con appositi permessi di "utente registrato", registrato con apposito ruolo sul DB in grado di consultare le informazioni presenti.
+
+Scenario principale di successo: L'utente registrato, come l'utente occasionale, può consultare le informazioni sulle console e sui videogiochi presenti nel sito web.
+
+*Caso d'uso UC6: Contatti Attore primario: utente occasionale
+
+Scenario principale di successo: L'utente seleziona i contatti del sito web. Il sistema mostra la form e l'utente inserisce il proprio nome, email e richieste. Il sistema inoltra tutto all'indirizzo email del sito.
+
+*Caso d'uso UC7: Chi siamo Attore primario: utente occasionale
+
+Scenario principale di successo: L'utente seleziona le informazioni del sito e il sistema mostra la pagina con le informazioni. 
+
 
 
 
