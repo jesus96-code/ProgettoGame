@@ -24,4 +24,7 @@ public interface ConsoleRepository extends CrudRepository<Console, Long> {
 	
 	public List<Console> findAll();
 	
+	public List<Console> findByNameStartingWithIgnoreCase(String iniziale);
+
+	
 }

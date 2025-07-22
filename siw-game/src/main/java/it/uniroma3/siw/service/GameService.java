@@ -33,8 +33,8 @@ public class GameService {
 	}
 	
 	@Transactional
-    public Games getGameById(Long gameId) {
-        return gameRepository.findById(gameId).get();
+    public Games getGameById(Long id) {
+        return gameRepository.findById(id).get();
     }
 
 }

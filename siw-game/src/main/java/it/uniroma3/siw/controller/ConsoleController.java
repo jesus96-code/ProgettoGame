@@ -26,6 +26,7 @@ import it.uniroma3.siw.repository.ConsoleRepository;
 import it.uniroma3.siw.repository.GameRepository;
 import it.uniroma3.siw.service.ConsoleService;
 import it.uniroma3.siw.service.CredentialsService;
+import it.uniroma3.siw.service.GameService;
 import it.uniroma3.siw.service.ReviewService;
 
 @Controller
@@ -36,6 +37,9 @@ public class ConsoleController {
 	
 	@Autowired 
 	private GameRepository gameRepository;
+	
+	@Autowired
+	private GameService gameService;
 	
 	@Autowired
 	private ConsoleService consoleService;
@@ -80,16 +84,16 @@ public class ConsoleController {
 		return "admin/indexConsole.html";
 	}
 	
-	@GetMapping(value = "/admin/adminConsole/{id}")
-	public String adminMovie(@PathVariable("id") Long id, Model model) {
-		Console console = this.consoleService.getConsoleById(id);
-		model.addAttribute("console", console);
-		return "admin/adminConsole.html";
-	}
+//	@GetMapping(value = "/admin/adminConsole/{id}")
+//	public String adminMovie(@PathVariable("id") Long id, Model model) {
+//		Console console = this.consoleService.getConsoleById(id);
+//		model.addAttribute("console", console);
+//		return "admin/adminConsole.html";
+//	}
 	
 	@GetMapping(value="/admin/manageConsoles")
 	public String manageConsoles(Model model) {
-		model.addAttribute("consoles", this.consoleRepository.findAll());
+		model.addAttribute("consoles", this.consoleService.getConsoles());
 		return "admin/manageConsoles.html";
 	}
 	
@@ -103,8 +107,8 @@ public class ConsoleController {
 	
 	@GetMapping(value="/admin/addGame/{id}")
 	public String addGame(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("games", gameRepository.findAll());
-		model.addAttribute("console", consoleRepository.findById(id).get());
+		model.addAttribute("games", gameService.findAllGames());
+		model.addAttribute("console", consoleService.getConsoleById(id));
 		return "admin/gameToAdd.html";
 	}
 
@@ -127,7 +131,7 @@ public class ConsoleController {
 
 		List<Games> gamesToAdd = this.gamesToAdd(id); //recupera la lista di attori da aggiungere
 		model.addAttribute("gamesToAdd", gamesToAdd);
-		model.addAttribute("console", this.consoleRepository.findById(id).get());
+		model.addAttribute("console", this.consoleService.getConsoleById(id));
 		return "admin/gamesToAdd.html";
 	}
 	
@@ -173,7 +177,7 @@ public class ConsoleController {
 	
 	@GetMapping(value = "/admin/reviewsInConsole/{consoleId}")
 	public String addRecensioneToConsole(@PathVariable("consoleId") Long consoleId, Model model) {
-		Console console = this.consoleRepository.findById(consoleId).get();
+		Console console = this.consoleService.getConsoleById(consoleId);
 		model.addAttribute("console", console);
 		model.addAttribute("review", new Review());
 		return "admin/newReview.html";
@@ -207,7 +211,7 @@ public class ConsoleController {
 		
 //    	UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //		Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
-		model.addAttribute("consoles", this.consoleRepository.findByOrderByNameAsc());
+		model.addAttribute("consoles", this.consoleService.getAllConsoleByAsc());
 //		model.addAttribute("user", credentials.getUser());
 		return "consoles.html";
 	}
@@ -216,17 +220,24 @@ public class ConsoleController {
 	public String formSearchConsoles() {
 		return "formSearchConsoles.html";
 	}
-
+	
 	@PostMapping("/searchConsoles")
-	public String searchConsoles(Model model, @RequestParam int anno) {
-		List<Console> movieYear = this.consoleRepository.findByAnno(anno);
-		model.addAttribute("consoles", movieYear);
+	public String searchConsoles(Model model, @RequestParam(required = false) Integer anno, @RequestParam(required = false) String iniziale) {
+		if(anno != null) {
+			List<Console> consoleYear = this.consoleRepository.findByAnno(anno);
+			model.addAttribute("consoles", consoleYear);
+		}else if(iniziale != null && !iniziale.trim().isEmpty()) {
+			List<Console> consoleIniziale = this.consoleRepository.findByNameStartingWithIgnoreCase(iniziale);
+			model.addAttribute("consoles", consoleIniziale);
+		}else {
+			model.addAttribute("consoles", new ArrayList<>());
+		}
 		return "foundConsoles.html";
 	}
 	
 	@GetMapping(value = "/user/consolesUser")
 	public String getUserConsoles(Model model) {
-		//SecurityContextHolder per ottenere l'oggetto che rappresenta l'utente attualmente loggato
+				//SecurityContextHolder per ottenere l'oggetto che rappresenta l'utente attualmente loggato
 				Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			    String email = null;
 
@@ -244,8 +255,8 @@ public class ConsoleController {
 			    }
 
 			    model.addAttribute("user", credentials.getUser());
-			    model.addAttribute("libri", this.consoleRepository.findAll());
-				return "user/libriUser.html";		
+			    model.addAttribute("consoles", this.consoleRepository.findAll());
+				return "user/consolesUser.html";		
 	}
 	
 	@GetMapping("user/indexUser")

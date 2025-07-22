@@ -1,7 +1,5 @@
 package it.uniroma3.siw.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,13 +46,13 @@ public class GameController {
 
 	@GetMapping("/game/{id}")
 	public String getGame(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("game", this.gameRepository.findById(id).get());
+		model.addAttribute("game", this.gameService.getGameById(id));
 		return "game.html";
 	}
 
 	@GetMapping("/game")
 	public String getGames(Model model) {
-		model.addAttribute("games", this.gameRepository.findAll());
+		model.addAttribute("games", this.gameService.findAllGames());
 		return "games.html";
 	}
 

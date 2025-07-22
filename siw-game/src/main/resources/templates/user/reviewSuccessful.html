@@ -6,14 +6,6 @@
 </head>
 <body>
 <header>
-    <!--  <div th:if="${#request.userPrincipal}">
-        <span th:text="${#request.userPrincipal.principal.username}"></span>
-        <a href="/logout">Logout</a>
-    </div>
-    <div th:unless="${#request.userPrincipal}">
-        <a href="/login">Login</a>
-    </div>-->
-    
      <div th:if="${#request.userPrincipal}">
 		        <!-- Se è un utente OAuth2 (Google)-->
 		        <span th:if="${#request.userPrincipal.principal instanceof T(org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser)}"
@@ -53,7 +45,7 @@
 	</div>
 
 	<div>
-	<a th:href="@{'/console'}">Torna all'elenco di film</a>
+	<a th:href="@{'/console'}">Torna all'elenco delle console</a>
 	</div>
 </body>
 </html>

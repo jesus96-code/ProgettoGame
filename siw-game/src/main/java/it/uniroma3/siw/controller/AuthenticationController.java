@@ -47,14 +47,6 @@ public class AuthenticationController {
 		if (authentication instanceof AnonymousAuthenticationToken) {
 	        return "index.html";
 		}
-//		else {		
-//			UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//			Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
-//			if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
-//				return "admin/indexAdmin.html";
-//			}
-//		}
-//        return "user/indexUser.html";
 		Object principal = authentication.getPrincipal();
 	    String username;
 
@@ -77,13 +69,6 @@ public class AuthenticationController {
 		
     @GetMapping(value = "/success")
     public String defaultAfterLogin(Model model) {
-        
-//    	UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//    	Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
-//    	if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
-//            return "admin/indexAdmin.html";
-//        }
-//        return "user/indexUser.html";
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         String username;

@@ -42,8 +42,6 @@
 	      <li th:each="console : ${consoles}">
 	        <a th:href="@{'/user/consoleUser' + '/' + ${console.id}}"
 	        	th:text = "${console.name} + ' ' + ${console.anno}">Play (2000)
-	          <!--<img class="card-img-top" th:src="@{'data:image;base64,' + ${movie.photo}}"
-	               alt="Card image cap"> -->
 	        </a>
 	      </li>
 	    </ul>

@@ -16,10 +16,13 @@
 		</div>
 	</header>
 
-	<div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
+	<div><a href="/"><img src="/images/logo-game.png" width="50%"/></a></div>
 	<h1>Cerca console per anno</h1>
 	<form th:action="@{/searchConsoles}" method="post">
 		<div>Anno: <input type="text" th:value="${anno}" name="anno" />
+		<div>
+			Iniziale(titolo o autore):<input type="text" th:value="${iniziale}" name="iniziale" maxlength="1" required/>
+		</div>
 		</div>
 		<div><input type="submit" /></div>
 	</form>

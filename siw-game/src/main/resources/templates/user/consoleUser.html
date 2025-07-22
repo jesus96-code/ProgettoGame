@@ -10,18 +10,6 @@
 
 <body>
 <header>
-    <!--  <div th:if="${#request.userPrincipal}">
-        <span th:text="${#request.userPrincipal.principal.username}"></span>
-        <a href="/logout">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Logout</button>
-        </a>
-    </div>
-    <div th:unless="${#request.userPrincipal}">
-        <a href="/login">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
-        </a>
-    </div>-->
-    
      <div th:if="${#request.userPrincipal}">
 		        <!-- Se è un utente OAuth2 (Google) -->
 		        <span th:if="${#request.userPrincipal.principal instanceof T(org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser)}"
@@ -52,7 +40,7 @@
 <div th:unless="${console}">Non esiste</div>
 
 <div id="flex-container">
-    <div class="movie-section">
+    <div>
 
         <!-- regista -->
         <div th:if="${console.giocoEsclusivo}">
@@ -72,7 +60,7 @@
             <h2>Giochi:</h2>
             <ul>
                 <li th:each="game : ${console.games}">
-                    <span th:text="${game.name}"> </span>
+                    <a th:href="@{'/game/' + ${game.id}}" th:text="${game.name}"> </a>
                 </li>
             </ul>
         </div>
@@ -93,7 +81,6 @@
                     <span th:text="${review.rating}"></span>
                     <span> Recensione: </span>
                     <span th:text="${review.comment}"></span>
-                   	<a th:href="@{'/user/deleteReview' + '/' + ${review.id} + '/' + ${console.id}}"> Cancella </a>
                 </li>
                 
             </ul>
@@ -105,23 +92,6 @@
             <a th:href="@{'/user/formNewReview/' + ${console.id}}">Aggiungi Recensione</a>
         </div>
     </div>
-
-    <!-- scene --->
-
-    <!-- <h2>Scene:</h2>
-    <div class="slideshow-container">
-        <div th:if="${!movie.scenes.isEmpty()}">
-            <div class="slideshow-wrapper">
-                <div class="slideshow-item">
-                    <div class="image-overlay" th:each="scene : ${movie.scenes}">
-                        <img class="mySlides active" th:src="@{'data:image;base64,' + ${scene}}"/>
-                    </div>
-                </div>
-                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                <a class="next" onclick="plusSlides(1)">&#10095;</a>
-            </div>
-        </div>
-    </div> -->
 </div>
 
 </body>

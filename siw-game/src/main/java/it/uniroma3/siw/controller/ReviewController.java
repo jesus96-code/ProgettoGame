@@ -6,7 +6,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
@@ -87,22 +86,6 @@ public class ReviewController {
 	        }
 	 }
 	
-//	@GetMapping("/admin/reviewsInMovie/{id}")
-//	public String reviewsInMovie(@PathVariable("id")Long id, Model model) {
-//		Movie movie = movieService.getMovieById(id);
-//		List<Review> reviews = this.reviewService.findAllByMovieId(movie.getId());
-//		if(!reviews.isEmpty()) {
-//			model.addAttribute("review", reviews);
-//			model.addAttribute("movie", movie);
-//			return "admin/manageReviews.html";
-//		} else {
-////			Movie movie = this.movieRepository.findById(movieId).get();
-//			model.addAttribute("movie", movie);
-//			model.addAttribute("review", new Review());
-//			return "user/formNewReview.html";
-//		}
-//	}
-	
 	@GetMapping("/reviews/reviewsOrdered/{id}")
     public String orderReviews(@PathVariable("id") Long id, Model model) {
         List<Review> reviews = this.reviewService.getReviewByRateAsc();
@@ -111,14 +94,5 @@ public class ReviewController {
         model.addAttribute("reviews", reviews);
         return "reviews.html";
     }
-	
-	@GetMapping("/user/deleteReview/{reviewId}/{consoleId}")
-	public String deleteRecensione(@PathVariable("reviewId") Long reviewId, @PathVariable("consoleId") Long consoleId, Model model) {
-		this.reviewService.deleteReview(reviewId);
-		Console console = this.consoleService.getConsoleById(consoleId);
-		model.addAttribute("console", console);
-		model.addAttribute("recensione", console.getReviews());
-		return "user/consoleUser";
-	}
 
 }

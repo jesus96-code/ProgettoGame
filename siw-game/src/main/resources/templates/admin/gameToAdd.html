@@ -19,7 +19,7 @@
 
 	<div><a href="/"><img src="/images/logo-game.png" width="50%"/></a></div>
 	<h1 th:text="'Gioco esclusivo per la console ' + ${console.name}"></h1>
-	<div th:if="${games.isEmpty()}">Non ci sono registi nel sistema</div>
+	<div th:if="${games.isEmpty()}">Non ci sono giochi esclusivi nel sistema</div>
 	<ul>
 		<li th:each="game : ${games}">
 			<a th:href="@{'/admin/setGiocoEsclusivoToConsole/'+ ${game.id}+'/'+${console.id}}"
