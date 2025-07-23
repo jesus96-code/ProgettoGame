@@ -43,7 +43,7 @@
             
             <div th:if="${console.giocoEsclusivo}">
                 <span>Gioco esclusivo per questa console: </span>
-                <span th:text="${console.giocoEsclusivo.name}">Steven</span>
+                <span th:text="${console.giocoEsclusivo.name}">Crash</span>
                 <a th:href="@{'/admin/addGame/' + ${console.id}}">Modifica Gioco</a>
             </div>
             <div th:unless="${console.giocoEsclusivo}">
@@ -64,7 +64,6 @@
                 </a>
                 
                 <div>
-               		<span th:text="'Numero di giochi: ' + ${gameCount}"> </span>
                		<a th:href="@{'/admin/conteggioGiochi/' + ${console.id}}">Quanti giochi ha la console</a>
                	</div>
             </div>

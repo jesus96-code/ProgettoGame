@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi siamo - SiwGame</title>
+    <link rel="stylesheet" href="/css/chiSiamo.css" />
+</head>
+
+<body>
+    <header class="main-header">
+        <div th:if="${#request.userPrincipal}">
+		        <!-- Se è un utente OAuth2 (Google) -->
+		        <span th:if="${#request.userPrincipal.principal instanceof T(org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser)}"
+		              th:text="${#request.userPrincipal.principal.attributes['email']}">[OAuth2 User]</span>
+		
+		        <!-- Se è un utente locale -->
+		        <span th:if="${#request.userPrincipal.principal instanceof T(org.springframework.security.core.userdetails.User)}"
+		              th:text="${#request.userPrincipal.name}">[Utente Locale]</span>
+		
+		        <a th:href="/logout">
+		            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Logout</button>
+		        </a>
+			    </div>
+			
+			    <div th:unless="${#request.userPrincipal}">
+			        <a th:href="@{/login}">
+			            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
+			        </a>
+			</div>
+    </header>
+
+    <div class="logo-container">
+        <a th:href="@{/}"><img src="/images/logo-game.png" alt="Logo SiwBook" class="logo" /></a>
+    </div>
+
+    <main class="content">
+        <h1>Chi siamo</h1>
+        <p>
+            Siamo un gruppo di studenti e sviluppatori appassionati di videogiochi.
+            Il progetto <strong>SiwGame</strong> nasce con l'obiettivo di digitalizzare e semplificare
+            la consultazione delle console e dei loro giochi.
+        </p>
+
+        <h2>Il nostro obiettivo</h2>
+        <p>
+            Offrire una piattaforma semplice e intuitiva per gestire videogiochi.
+            Crediamo che la tecnologia debba essere al servizio della cultura videoludica.
+        </p>
+
+        <h2>Contatti</h2>
+        <p>Per qualsiasi informazione, visita la pagina <a href="/contattaci">Contattaci</a>.</p>
+
+        <div class="back-link">
+            <a th:href="@{/}"><button>Torna alla homepage</button></a>
+        </div>
+    </main>
+
+    <div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

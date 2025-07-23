@@ -27,25 +27,27 @@
 			</a>
 	   </div>
 	</header>
-
-	<div><a href="/"><img src="/images/logo-game.png" width="50%"/></a></div>
-    <h1>Dettagli Game</h1>
-    <div th:if="${game}">	
-    	<div>
-        	<span th:text="${game.name}">Dino </span>
-        </div>
-        <span><img width="10%"  th:src=${game.urlOfPicture} /></span>
-    </div>
-    <div th:unless="${game}">Non esiste</div>
+	<main>
+		<div><a href="/"><img src="/images/logo-game.png" width="50%"/></a></div>
+	    <h1>Dettagli Game</h1>
+	    <div th:if="${game}">	
+	    	<div>
+	        	<span th:text="${game.name}">Dino </span>
+	        </div>
+	        <span><img width="40%"  th:src=${game.urlOfPicture} /></span>
+	    </div>
+	    <div th:unless="${game}">Non esiste</div>
+	    
+	    <div>
+	  		<a href="/game">
+	  			<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Torna indietro</button>
+	  		</a>
+	  	</div>
+  	</main>
+    
+    <div th:insert="fragments/footer :: footer"></div>
   </body>
   
-  <footer>
-  	<div>
-  		<a href="/game">
-  			<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Torna indietro</button>
-  		</a>
-  	</div>
-  </footer>
 </html>
 
 

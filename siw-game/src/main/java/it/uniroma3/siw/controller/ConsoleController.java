@@ -129,7 +129,7 @@ public class ConsoleController {
 	@GetMapping("/admin/updateGames/{id}")
 	public String updateGames(@PathVariable("id") Long id, Model model) {
 
-		List<Games> gamesToAdd = this.gamesToAdd(id); //recupera la lista di attori da aggiungere
+		List<Games> gamesToAdd = this.gamesToAdd(id); //recupera la lista di giochi da aggiungere
 		model.addAttribute("gamesToAdd", gamesToAdd);
 		model.addAttribute("console", this.consoleService.getConsoleById(id));
 		return "admin/gamesToAdd.html";
@@ -226,9 +226,6 @@ public class ConsoleController {
 		if(anno != null) {
 			List<Console> consoleYear = this.consoleRepository.findByAnno(anno);
 			model.addAttribute("consoles", consoleYear);
-		}else if(iniziale != null && !iniziale.trim().isEmpty()) {
-			List<Console> consoleIniziale = this.consoleRepository.findByNameStartingWithIgnoreCase(iniziale);
-			model.addAttribute("consoles", consoleIniziale);
 		}else {
 			model.addAttribute("consoles", new ArrayList<>());
 		}
@@ -248,7 +245,7 @@ public class ConsoleController {
 			    } else {
 			        throw new IllegalStateException("Tipo di autenticazione non riconosciuto: " + principal.getClass());
 			    }
-
+			    //va a cercare le credenziali in base all'email
 			    Credentials credentials = credentialsService.getCredentials(email); //recupera le credenziali dal DB
 			    if (credentials == null) {
 			        return "redirect:/registerGoogle"; // reindirizza alla pagina di registrazione

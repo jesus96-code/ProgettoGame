@@ -40,6 +40,16 @@ public class AuthenticationController {
 	public String showLoginForm (Model model) {
 		return "formLogin";
 	}
+	
+	@GetMapping(value = "/chiSiamo")
+	public String chiSiamo(Model model) {
+		return "chiSiamo";
+	}
+	
+	@GetMapping(value = "/contattaci")
+	public String contattaci() {
+		return "contattaci";
+	}
 
 	@GetMapping(value = "/") 
 	public String index(Model model) {

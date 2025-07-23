@@ -20,12 +20,11 @@
 	<h1>Cerca console per anno</h1>
 	<form th:action="@{/searchConsoles}" method="post">
 		<div>Anno: <input type="text" th:value="${anno}" name="anno" />
-		<div>
-			Iniziale(titolo o autore):<input type="text" th:value="${iniziale}" name="iniziale" maxlength="1" required/>
-		</div>
 		</div>
 		<div><input type="submit" /></div>
 	</form>
+	
+	<div th:insert="fragments/footer :: footer"></div>
 </body>
 
 </html>

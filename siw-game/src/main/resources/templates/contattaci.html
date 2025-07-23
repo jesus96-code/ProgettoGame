@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Contattaci - SiwGame</title>
+    <link rel="stylesheet" href="/css/contattaci.css" />
+</head>
+
+<body>
+    <header class="main-header">
+        <div th:if="${#request.userPrincipal}">
+		        <!-- Se è un utente OAuth2 (Google) -->
+		        <span th:if="${#request.userPrincipal.principal instanceof T(org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser)}"
+		              th:text="${#request.userPrincipal.principal.attributes['email']}">[OAuth2 User]</span>
+		
+		        <!-- Se è un utente locale -->
+		        <span th:if="${#request.userPrincipal.principal instanceof T(org.springframework.security.core.userdetails.User)}"
+		              th:text="${#request.userPrincipal.name}">[Utente Locale]</span>
+		
+		        <a th:href="/logout">
+		            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Logout</button>
+		        </a>
+			    </div>
+			
+			    <div th:unless="${#request.userPrincipal}">
+			        <a th:href="@{/login}">
+			            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
+			        </a>
+			</div>
+    </header>
+
+    <div class="logo-container">
+        <a th:href="@{/}"><img src="/images/logo-game.png" alt="Logo SiwGame" class="logo" /></a>
+    </div>
+
+    <main class="content">
+        <h1>Contattaci</h1>
+        <p>Hai bisogno di assistenza o vuoi inviarci un feedback? Puoi scriverci:</p>
+        <ul>
+            <li><strong>Email:</strong> info@siwgame.it</li>
+            <li><strong>Telefono:</strong> +39 123 456 7890</li>
+            <li><strong>Indirizzo:</strong> Via dei Games 42, Roma, Italia</li>
+        </ul>
+
+        <div class="back-link">
+            <a th:href="@{/}"><button>Torna alla homepage</button></a>
+        </div>
+    </main>
+
+    <div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

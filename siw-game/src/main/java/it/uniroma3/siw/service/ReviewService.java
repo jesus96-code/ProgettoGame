@@ -54,9 +54,9 @@ public class ReviewService {
 	@Transactional
     public void deleteReview(Long reviewId) {
             Review review = this.getReviewById(reviewId);
-            Console console = review.getConsole(); // ottiene l'oggetto Movie associato alla recensione
+            Console console = review.getConsole(); // ottiene l'oggetto Console associato alla recensione
             review.getReviewer().getReviews().remove(review); //rimuove la recensione della lista delle recensioni dell'autore della recensione
-            review.getConsole().getReviews().remove(review);//rimuove la recensione della lista delle recensioni associate al film
+            review.getConsole().getReviews().remove(review);//rimuove la recensione della lista delle recensioni associate alla console
             this.consoleRepository.save(console);
             this.reviewRepository.delete(review);
     }
